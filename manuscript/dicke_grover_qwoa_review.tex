@@ -233,6 +233,8 @@ The graphs $G_{\mathcal{F}}[G]$ are isomorphic to a class of graphs in the liter
 
 {\color{red}\textbf{[REVIEW -- novelty boundary]} Make explicit that the graph-theoretic regularity theorem is prior work; the new contribution is its interpretation/specialization for $XY$ mixers and algorithm design.}
 
+{\color{red}\textbf{[LITERATURE UPDATE -- XY topology]} The recent DLA analysis of Kordonowy and Leipold~\cite{Kordonowy2026} explicitly studies different $XY$-mixer topologies for cardinality-constrained optimization. This paper should be discussed here because it changes the novelty boundary: topology-dependent $XY$ expressivity is now a direct literature topic. The present result remains distinct in identifying the induced feasible-state/token graph and embedding complete-$XY$ into the Johnson association scheme, but claims about topology, expressivity, or trainability should be compared against Ref.~\cite{Kordonowy2026}.}
+
 \begin{corollary}[Complete $XY$ mixer]
 \label{cor:dicke-xy-johnson}
 For $G=K_n$,
@@ -273,6 +275,8 @@ $b(x)$ being the number of maximal cyclic blocks of ones in $x$. In
 particular $G_{\F}[C_n]$ is not regular for $2\le k\le n-2$, and
 $\ket{D^n_k}$ is not an eigenvector of $H_{XY}(C_n)$.
 \end{corollary}
+
+{\color{red}\textbf{[LITERATURE UPDATE -- initial-state/mixer alignment]} He et al.~\cite{He2023} directly compare ring and complete $XY$ mixers for constrained portfolio optimization and show that alignment between the initial state and the mixer ground state affects performance; they also study Trotterized mixers and execute a 32-qubit trapped-ion experiment. This prior work should be cited explicitly when interpreting the Dicke/complete-$XY$ versus Dicke/ring-$XY$ distinction. Note that their ground-state convention must be reconciled with the sign convention used in this manuscript.}
 
 \begin{proof}
 The first statement is Proposition~\ref{prop:xy-hopping} with $E=E(C_n)$, and
