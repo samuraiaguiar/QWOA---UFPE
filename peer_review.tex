@@ -1,0 +1,112 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage[colorlinks=true,allcolors=blue]{hyperref}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\title{Detailed Peer Review\\\large When is a QAOA mixer a quantum walk, and which walk should it be?}
+\date{\today}
+\begin{document}
+\maketitle
+\section*{Overall assessment}
+The manuscript develops a useful connection between feasibility-preserving QAOA mixers and continuous-time quantum walks and uses fixed-cardinality portfolio optimization as a structured benchmark for feasible-state connectivity. The most interesting result is not that one mixer is universally best, but that connectivity density alone does not order performance: most Johnson-scheme graphs form a broad performance cluster, the complete feasible graph is consistently weak under the reported protocol, and the Johnson graph offers a particularly local implementation.
+
+The paper has a potentially publishable core, but I recommend \textbf{major revision}. Several statements exceed what is established mathematically or numerically. The main concerns are: (i) the mixer--walk theorem is advertised more generally than its hypotheses permit; (ii) penalty formulations are conflated with diagonal terms in the mixer; (iii) the numerical comparison is vulnerable to optimizer-dependent bias already visible at $p=1$; (iv) many graph comparisons are interpreted without multiplicity correction; and (v) circuit resources compare exact Grover evolution with an approximate one-step Trotter realization without matching error.
+
+\section*{Major comments}
+\subsection*{1. Scope of the mixer--walk correspondence}
+The abstract and introduction describe the result as applying to an arbitrary feasibility-preserving mixer. Lemma~1 additionally assumes a constant diagonal and real nonzero off-diagonal matrix elements with a common sign. A general feasibility-preserving Hermitian Hamiltonian can contain nonconstant diagonal terms, mixed-sign real hopping, or complex phases.
+
+The minimal revision is to say that the paper gives explicit structural conditions under which a feasibility-preserving mixer is equivalent, up to an energy shift and parameter reparametrization, to a continuous-time quantum walk on a positively weighted feasible graph. A stronger mathematical extension could include on-site potentials, signed graphs, and magnetic/chiral walks with gauge/cycle-flux conditions.
+
+\subsection*{2. Novelty should be positioned around the full framework}
+Once the hypotheses of the lemma are imposed, the adjacency-plus-identity decomposition is close to definitional. The stronger contribution is the chain mixer structure $\to$ feasible graph $\to$ named graph families $\to$ Johnson scheme $\to$ performance/spectrum/locality. The paper should sell this package rather than the lemma alone.
+
+\subsection*{3. Penalty-QAOA is not a mixer on-site potential}
+The statement that penalty formulations fall into the class of mixers with configuration-dependent diagonal terms is conceptually incorrect for standard penalty-QAOA. Constraint penalties are added to $H_C$, while the mixer remains unchanged. A diagonal term deliberately added to $H_M$ can be interpreted as an on-site potential, but that is a different ansatz. This distinction should be corrected before submission.
+
+\subsection*{4. Disconnected feasible graphs}
+The statement that the reachable set is confined to the component containing the support of the uniform feasible state is incorrect because that state has support on every feasible vertex. Instead, connected components define invariant subspaces. Neither the mixer nor diagonal $H_C$ transfers amplitude between them, so initial probability mass remains partitioned among component sectors.
+
+\subsection*{5. Ground-state sign convention}
+For $H_M=A_T$ with a nonnegative regular adjacency matrix, the uniform state is the principal/top eigenvector with eigenvalue equal to the degree, not generally the ground state. It is a ground state for $H_M=-A_T$. The sign convention should be made consistent throughout.
+
+\subsection*{6. Optimizer reliability threatens the mixer ranking}
+The manuscript reports that exhaustive $p=1$ search can outperform the optimizer by a median factor of roughly $1.1$--$1.8$. This is large enough that differences at larger depth may partly reflect optimization difficulty rather than ansatz expressivity.
+
+Use $p=1$ as a calibration benchmark. Compare COBYLA with at least one global/population method such as differential evolution or CMA-ES and another multistart local strategy. Report the optimization gap and objective-evaluation budget by mixer. Then repeat representative $p=2$--$4$ cases with increased restart budgets. The key question is whether mixer rankings survive optimizer changes. Until then, depth claims should say under the present optimization protocol.
+
+\subsection*{7. Choice of $q$ and possible selection bias}
+The source contains an unresolved note about the 30-instance pilot producing survival counts $2/30$, $3/30$, and $11/30$. State how those instances were generated, whether they overlap with evaluation data, and whether $q=0.75$ was fixed before inspecting mixer performance. Add a $p=1$ sensitivity analysis over several $q$ values where enough nontrivial instances survive.
+
+\subsection*{8. Hardness screening changes the target population}
+The four-heuristic screen is defensible as a hard-instance generator, but conclusions then apply to instances conditioned on that screen rather than portfolio instances in general. Explicitly describe the benchmark as conditional and provide an unscreened $p=1$ supplementary comparison to test screening dependence.
+
+\subsection*{9. Statistical multiplicity}
+Up to 31 graphs are compared, while quoted sign-test $p$-values are uncorrected. Treat these tests as exploratory. Use paired effect sizes and bootstrap confidence intervals as primary evidence and apply a stated correction such as Holm--Bonferroni for confirmatory pairwise tests. Avoid using statistically indistinguishable as evidence of equivalence unless an equivalence/noninferiority procedure is performed.
+
+\subsection*{10. The $(20,5)$ depth result is underpowered}
+Only six instances enter the $(20,5)$ depth experiment and uncertainty intervals overlap strongly. The ordering inverts is too strong. Say that the observed ordering differs in this six-instance subset and treat it as exploratory. A targeted replication involving Johnson, $R_{23}$, $R_{13}$, and the complete graph would be valuable if a full rerun is expensive.
+
+\subsection*{11. Test the spectral-collapse mechanism}
+The conjecture that spectral collapse reduces the reachable operator algebra is potentially one of the strongest scientific ideas in the paper. At minimum report, for every $A_T$, the number of distinct eigenvalues, multiplicities, relevant spectral gaps, degree, and distance-class composition.
+
+A stronger test is to compute or bound $\dim\operatorname{Lie}\{iH_C,iA_T\}$ for tractable instances and relate it to $P_*$, top-5\% probability, and normalized energy. Small-system evidence would already be useful.
+
+\subsection*{12. Determine what matters beyond degree}
+The sweep suggests degree alone does not control performance. Explore relationships with number of distinct eigenvalues, spectral gap, diameter where useful, distance-class composition, and mixing/localization diagnostics. This cannot establish causality by itself but can reject simple density-based explanations.
+
+\subsection*{13. Circuit comparison must be made at matched error}
+The complete feasible graph/Grover mixer is implemented exactly, whereas the Johnson $XY$ mixer is costed using one Trotter step even though overlapping $XY$ terms do not commute. The quoted eight-fold CNOT and thirty-to-sixty-fold depth differences are therefore raw compilation ratios, not equal-accuracy resource ratios.
+
+Perform a Trotter-convergence study for representative optimized $\beta$ values using $r=1,2,4,8,\ldots$. Report state infidelity and/or changes in final $P_*$ and energy, supplemented by an operator-error bound where feasible. Compare CNOT count and depth at a common error tolerance.
+
+\subsection*{14. Near-term/noise claims are unsupported}
+The main simulations are ideal statevector calculations. Resource estimates assume all-to-all connectivity and omit shots, physical gate errors, routing/SWAP overhead, and calibration effects. Phrases such as at any achievable noise level should be removed unless supported.
+
+If near-term relevance is retained, add finite-shot simulations, representative two-qubit noise, and compilation onto at least one realistic topology. A real-device run would be stronger but is not necessary if claims are restricted to resource implications.
+
+\subsection*{15. Separate exact algorithmic dynamics from approximate implementation}
+The main performance curves use exact feasible-subspace evolution. The circuit section studies approximate realizations. The paper should explicitly separate these evidence layers. Exact Johnson performance should not be attributed to the one-step Trotter circuit without demonstrating that its approximation error is operationally negligible.
+
+\subsection*{16. The complete graph is the robust observation; sparsity is not}
+The data do not establish that sparse mixers generally outperform dense mixers. At $(20,5)$ some denser non-complete mixers outperform Johnson under the current protocol. The stronger claim is that complete mixing is a structurally exceptional endpoint and is consistently weak in the tested benchmark. Increasing feasible-state connectivity does not monotonically improve performance; spectral/geometric structure appears to matter in addition to degree.
+
+\subsection*{17. Portfolio optimization should be framed as a structured testbed}
+The contribution is primarily about mixer design/QWOA rather than realistic portfolio construction. State explicitly that fixed-cardinality portfolio selection is used as a structured benchmark with natural Johnson geometry. Otherwise finance-oriented reviewers may reasonably request transaction costs, turnover, estimation uncertainty, richer constraints, out-of-sample portfolio performance, and extensive classical solver comparisons that are peripheral to the main algorithmic contribution.
+
+\subsection*{18. Reproducibility is not submission-ready}
+The source still contains unresolved \texttt{CONFIRMAR} markers concerning objective normalization, metric definitions, parameter domains, optimizer scaling, pilot composition, and repository availability. Before submission, freeze code/data, provide a permanent repository release/DOI, specify dependencies and seeds, provide a scripted reproduction path for every table/figure, and add regression tests for objective normalization, metrics, and graph spectra.
+
+\section*{Recommended validation package}
+\begin{enumerate}
+\item Optimizer calibration against exhaustive $p=1$ and alternative optimizers.
+\item Independent/documented $q$ pilot plus $q$ sensitivity.
+\item Screened versus unscreened $p=1$ benchmark.
+\item Paired effect sizes/confidence intervals and multiplicity-aware testing.
+\item Spectral degeneracy/gap analysis for every $A_T$.
+\item Small-system dynamical-Lie-algebra analysis if computationally feasible.
+\item Trotter convergence and matched-error resource comparison.
+\item Noise-aware endpoint simulations or removal of NISQ/hardware-performance language.
+\end{enumerate}
+
+\section*{Minor comments}
+\begin{enumerate}
+\item Clearly distinguish theorem, proposition, empirical observation, and conjecture.
+\item Define exactly what best means whenever used; $P_*$, top-5\%, and normalized energy need not rank mixers identically.
+\item Report objective-evaluation counts, not only restart counts.
+\item For Grover/complete-graph landscape equivalence, state parameter-domain assumptions after rescaling.
+\item Separate prior token-graph regularity results from the new algorithmic interpretation.
+\item State precisely the transpilation assumptions behind circuit depth and CNOT counts.
+\item Replace absolute statements such as not candidates for hardware by impractical under the decomposition/resource model considered here.
+\item Consider moving exhaustive graph-family detail to supplementary material and emphasizing mechanism in the main text.
+\end{enumerate}
+
+\section*{Suggested revised central message}
+\begin{quote}
+Constraint preservation does not uniquely determine useful feasible-state connectivity. Within the Johnson association scheme, increasing graph density does not monotonically improve variational optimization. The complete feasible graph is a structure-erasing endpoint and performs consistently poorly under the tested protocol, while several structurally informed mixers retain substantially better performance. The results motivate spectral and geometric properties of the feasible-state graph as algorithm-design variables, subject to optimizer and implementation constraints.
+\end{quote}
+
+\section*{Recommendation}
+\textbf{Major revision.} The manuscript has a coherent and potentially significant core, but central statements currently mix exact mathematical results, ideal numerical observations, and approximate circuit-resource implications. Narrowing theorem-level claims, correcting the penalty/mixer distinction, calibrating classical optimization, testing the spectral mechanism, and performing a matched-error circuit comparison would substantially improve rigor and impact.
+\end{document}
