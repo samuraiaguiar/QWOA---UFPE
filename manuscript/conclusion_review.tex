@@ -58,7 +58,11 @@ times the depth.
 {\color{red}\textbf{[REVIEW -- matched-error requirement]} These are raw compilation ratios versus one approximate Trotter step, not equal-accuracy resource ratios.} Constraint preservation and connectivity are separate
 design choices, and the second is not settled by maximizing it.
 
-Two caveats on scope. The benchmark is not a reproduction of
+Two caveats on scope. Related Dicke-state portfolio work now also includes the multiclass VQE framework of Scursulim et al.~\cite{Scursulim2026}, which enforces diversification/cardinality constraints in the ansatz and explicitly studies optimizer dependence. This reinforces that the novelty here should be assigned to feasible-state mixer geometry and the Johnson-scheme comparison, not to Dicke-state feasibility encoding itself.
+
+{\color{red}\textbf{[LITERATURE UPDATE -- positioning]} Cite Ref.~\cite{Scursulim2026} when delimiting the portfolio contribution. It is especially useful because its CMA-ES/COBYLA comparison independently supports treating classical optimization as an experimental variable rather than an implementation detail.}
+
+The benchmark is not a reproduction of
 Ref.~\cite{Slate2021}, whose three-position encoding gives a different
 feasible set, so it tests the general recommendation rather than the
 specific result. And the ordering at the endpoints is what
