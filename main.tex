@@ -1,0 +1,197 @@
+% ****** Start of file apssamp.tex ******
+%
+%   This file is part of the APS files in the REVTeX 4.2 distribution.
+%   Version 4.2a of REVTeX, December 2014
+%
+%   Copyright (c) 2014 The American Physical Society.
+%
+%   See the REVTeX 4 README file for restrictions and more information.
+%
+% TeX'ing this file requires that you have AMS-LaTeX 2.0 installed
+% as well as the rest of the prerequisites for REVTeX 4.2
+%
+% See the REVTeX 4 README file
+% It also requires running BibTeX. The commands are as follows:
+%
+%  1)  latex apssamp.tex
+%  2)  bibtex apssamp
+%  3)  latex apssamp.tex
+%  4)  latex apssamp.tex
+%
+\documentclass[%
+ reprint,
+superscriptaddress,
+%groupedaddress,    
+%unsortedaddress,
+%runinaddress,
+%frontmatterverbose, 
+%preprint,
+%preprintnumbers,
+%nofootinbib,
+%nobibnotes,
+%bibnotes,
+ amsmath,amssymb,
+ aps,
+ pra,
+%prb,
+%rmp,
+%prstab,
+%prstper,
+floatfix,
+]{revtex4-2}
+
+\usepackage{graphicx}% Include figure files
+\usepackage{dcolumn}% Align table columns on decimal point
+\usepackage{bm}% bold math
+\usepackage{amsthm}
+
+\usepackage{graphicx}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{braket}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{dsfont}
+\usepackage{amsmath,amssymb}
+\usepackage{tikz-cd}
+\usepackage{quiver}
+\usepackage{physics}
+\usepackage{qcircuit}
+\usepackage{dsfont}
+\usepackage{amsthm}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{remark}{Remark}
+\newtheorem{definition}{Definition}
+
+\usepackage{xcolor}
+\usepackage{soul}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{float} % for [H]
+\usepackage{booktabs}
+
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{mathtools}
+\usepackage{lipsum}
+\usepackage{float}
+\usepackage[utf8]{inputenc}
+\usepackage[justification=raggedright,singlelinecheck=false]{caption}
+
+%\usepackage{hyperref}% add hypertext capabilities
+%\usepackage[mathlines]{lineno}% Enable numbering of text and display math
+%\linenumbers\relax % Commence numbering lines
+
+%\usepackage[showframe,%Uncomment any one of the following lines to test 
+%%scale=0.7, marginratio={1:1, 2:3}, ignoreall,% default settings
+%%text={7in,10in},centering,
+%%margin=1.5in,
+%%total={6.5in,8.75in}, top=1.2in, left=0.9in, includefoot,
+%%height=10in,a5paper,hmargin={3cm,0.8in},
+%]{geometry}
+
+\usepackage{etoolbox}    % só se ainda não usar
+\makeatletter
+% espaço entre dois floats “normais”
+\setlength{\floatsep}{0pt}
+% espaço entre float e texto quando está no topo ou fundo
+\setlength{\textfloatsep}{0pt}
+% espaço entre texto e float quando inserido in-text
+\setlength{\intextsep}{0pt}
+\makeatother
+
+\newcommand{\mL}{\mathcal{L}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\HF}{\mathcal{H}_{\F}}
+
+
+\usepackage{caption}
+\captionsetup[algorithm]{skip=0pt}  
+
+% Preamble ends here
+\begin{document}
+
+\preprint{APS/123-QED}
+
+\title{When is a QAOA mixer a quantum walk, and which walk should it be?}% Force line breaks with \\
+%\thanks{A footnote to the article title}%
+
+\author{Pedro Linck}
+\email{Contact author: pedro.linck@ufpe.br}
+\affiliation{Departamento de Física, Centro de Ciências Exatas e da Natureza, Universidade Federal de Pernambuco, Recife-PE, Brazil, 50670-901}
+
+\author{Gabriel M. Langeloh}
+\affiliation{Instituto de Ciência e Tecnologia Itaú, São Paulo, Brazil}
+
+\author{Adenilton J. da Silva}
+\affiliation{Centro de Informática, Universidade Federal de Pernambuco, Recife, Pernambuco, Brazil, 50740-560}
+
+\author{Samuraí Brito}
+\affiliation{Instituto de Ciência e Tecnologia Itaú, São Paulo, Brazil}
+    
+\author{Nadja K. Bernardes}
+\affiliation{Departamento de Física, Centro de Ciências Exatas e da Natureza, Universidade Federal de Pernambuco, Recife-PE, Brazil, 50670-901}
+
+
+%\collaboration{MUSO Collaboration}%\noaffiliation
+
+%\collaboration{CLEO Collaboration}%\noaffiliation
+
+\date{\today}% It is always \today, today,
+             %  but any date may be explicitly specified
+
+\begin{abstract}
+The quantum approximate optimization algorithm (QAOA) and the quantum walk
+optimization algorithm (QWOA) are usually presented as separate
+constructions, the first through Pauli mixers and the second through a graph
+on the feasible set. The two coincide in particular cases, but the
+correspondence has been established instance by instance. We state it in
+general, for an arbitrary feasibility-preserving mixer, and use it to identify
+the mixers in current use as walks on named graphs. The complete-graph $XY$
+mixer with a Dicke initial state is exactly a walk on the Johnson graph
+$J(n,k)$, with no residual phase and no rescaling. The Grover mixer and the
+complete-graph QWOA mixer are the same operator, up to a global phase and a
+rescaling of the mixing parameter. The ring $XY$ mixer walks on a graph that
+is not regular, whose vertex degree we give in closed form; we classify the
+connectivity graphs whose mixer is regular, for $2\le k\le n-2$ only the
+complete graph, except at $n=2k$, where the star and its complement also
+qualify, and we show that $J(n,k)$ is the sparsest graph on the feasible set
+invariant under permutations of the assets at the sizes considered here. The
+Johnson graph and the complete graph are the sparse and dense endpoints of a
+family of regular, vertex-transitive graphs obtained from the distance classes
+of the Johnson scheme. Benchmarking fixed-cardinality portfolio selection
+across that family, we find the Johnson mixer on par with or ahead of the
+denser members at $(12,3)$ and $(16,4)$ at every depth tested, and behind them
+by a factor of about $1.5$ at $(20,5)$ on six instances, while the complete
+graph is worse than all of them on every metric at the depths reachable on
+near-term hardware. It is also the more expensive of the two to realise, by a
+factor of eight in \textsc{cnot} count and thirty to sixty in circuit depth,
+against a single Trotter step of the $XY$ mixer.
+\end{abstract}
+%\keywords{Suggested keywords}%Use showkeys class option if keyword
+                              %display desired
+\maketitle
+
+%\tableofcontents
+\input{manuscript/introduction}
+
+\input{manuscript/preliminaries}
+
+\input{manuscript/dicke_grover_qwoa}
+
+\input{manuscript/results}
+
+\input{manuscript/conclusion}
+
+\nocite*
+\bibliography{references}
+
+
+
+\end{document}
+%
+% ****** End of file apssamp.tex ******

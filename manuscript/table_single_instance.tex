@@ -1,0 +1,20 @@
+\begin{table}[t]
+\centering
+\caption{
+Depth scaling of the optimal-sampling probability, averaged over the tested
+market windows, asset-set sizes, and cardinalities after selecting the best
+result within each instance--method--depth group. Error bars denote one
+standard deviation over the grouped instances.
+}
+\label{tab:single-instance-compact}
+\begin{tabular}{lcccc}
+\toprule
+Method & Edges & Mean degree & $P_\star$ & $\langle C\rangle$\\
+\midrule
+Johnson & 30 & 6.0 & 0.521 & -0.451\\
+complete/Grover & 45 & 9.0 & 0.326 & -0.409\\
+Dicke+Grover & -- & -- & 0.307 & -0.402\\
+penalty-QAOA ($\lambda=0.1$) & -- & -- & 0.093 & -0.342\\
+\bottomrule
+\end{tabular}
+\end{table}

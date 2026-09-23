@@ -1,0 +1,30 @@
+\begin{table*}[t]
+\centering
+\caption{
+Aggregate benchmark over the market windows, cardinalities, and asset-set
+sizes. Each entry averages the best result obtained within each
+instance--method--depth group, after optimizing over random initializations
+and, for the penalty-QAOA baseline, over the scanned penalty strengths.}
+\label{tab:aggregate-depth}
+\begin{tabular}{lcccc}
+\toprule
+Method & $p$ & $P_\star$ & $P_{\leq 5\%}$ & $\Delta_{\rm norm}$\\
+\midrule
+Johnson & 1 & $0.347\pm 0.151$ & 0.463 & 0.125\\
+Johnson & 2 & $0.432\pm 0.181$ & 0.561 & 0.085\\
+Johnson & 3 & $0.419\pm 0.154$ & 0.548 & 0.094\\
+weighted $\alpha=0.25$ & 1 & $0.337\pm 0.134$ & 0.456 & 0.125\\
+weighted $\alpha=0.25$ & 2 & $0.432\pm 0.173$ & 0.564 & 0.085\\
+weighted $\alpha=0.25$ & 3 & $0.452\pm 0.171$ & 0.587 & 0.081\\
+weighted $\alpha=0.5$ & 1 & $0.300\pm 0.103$ & 0.418 & 0.141\\
+weighted $\alpha=0.5$ & 2 & $0.411\pm 0.153$ & 0.544 & 0.093\\
+weighted $\alpha=0.5$ & 3 & $0.441\pm 0.154$ & 0.581 & 0.085\\
+complete/Grover & 1 & $0.163\pm 0.090$ & 0.231 & 0.245\\
+complete/Grover & 2 & $0.246\pm 0.128$ & 0.336 & 0.167\\
+complete/Grover & 3 & $0.280\pm 0.142$ & 0.382 & 0.142\\
+penalty-QAOA & 1 & $0.095\pm 0.057$ & 0.131 & 0.277\\
+penalty-QAOA & 2 & $0.186\pm 0.141$ & 0.241 & 0.197\\
+penalty-QAOA & 3 & $0.232\pm 0.143$ & 0.298 & 0.147\\
+\bottomrule
+\end{tabular}
+\end{table*}
