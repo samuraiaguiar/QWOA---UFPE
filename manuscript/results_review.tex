@@ -431,6 +431,10 @@ depth.
 
 {\color{red}\textbf{[LITERATURE UPDATE -- Trotter benchmark]} He et al.~\cite{He2023} already study the effect of Trotter approximation on $XY$-mixer QAOA performance, including ring/complete connectivity and noisy/hardware experiments. The manuscript should benchmark its Trotter-resource claim against that literature and avoid presenting Trotter sensitivity as an unexplored issue. A matched-error comparison remains a useful new experiment here because the present paper compares Johnson evolution with exact complete-feasible/Grover evolution.}
 
+{\color{red}\textbf{[LITERATURE UPDATE 2026 -- XY Trotterization]} Awasthi et al.~\cite{Awasthi2026Trotter} now analyze Trotter errors for constraint-preserving $XY$ mixers and identify constraint size/locality as a key determinant; portfolio optimization is one of their benchmarks. This strengthens the need for a matched-error resource comparison and means the manuscript should not treat the $\beta^2/r$ statement as sufficient implementation evidence.}
+
+{\color{red}\textbf{[LITERATURE UPDATE 2026 -- warm-start/topology]} Bucher et al.~\cite{Bucher2026WarmStart} construct iterative warm-start $XY$ mixers with explicit ground-state alignment and hardware validation. Together with Kordonowy and Leipold~\cite{Kordonowy2026}, this reinforces that trainability, initialization, and topology are experimentally relevant design variables and should be separated from pure feasible-graph expressivity.}
+
 The results are favourable, the whole cluster performs within $8\%$ of itself across two
 orders of magnitude in degree, so the sparsest and only two-local member
 costs almost nothing in quality, and at $(16,4)$ nothing at all, leading
