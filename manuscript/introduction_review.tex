@@ -71,6 +71,18 @@ cost landscape, which by Proposition~\ref{prop:grover-complete-qwoa} applies to
 the complete-graph mixer as well. What the sweep simulation adds is the interior of the
 family, and in particular how early the degradation sets in.
 
+{\color{red}\textbf{[NOVELTY AUDIT 2026 -- central revision]} A current-literature audit materially narrows what can be claimed as new. Ring/complete $XY$ topologies with Dicke-state initializations were already compared by Cook et al.~\cite{Cook2019}, and He et al.~\cite{He2023} studied initial-state/mixer alignment, Trotterization, and hardware execution. Matwiejew and Wang~\cite{Matwiejew2024} already formulate graph-informed CTQW mixer design using vertex-transitive graphs. Most importantly, Min, Seo, and Heo~\cite{MinSeoHeo2026} explicitly describe an intra-register $XY$ mixer as a quantum walk on Johnson-graph subspaces. Together with the token-graph literature~\cite{FabilaMonroy2012Token,Carballosa2017Regularity}, this means that the identity ``complete-$XY$ on fixed Hamming weight $\leftrightarrow J(n,k)
+
+Section~\ref{sec:preliminaries} fixes the portfolio problem, the
+feasible-subspace ansatz, and the graph families used throughout.
+    Section~\ref{sec:mixers-as-walks} gives the mixer--walk correspondence and applies it to the
+    standard mixers. Section~\ref{sec:results} describes the data, the optimization protocol and reports the
+    benchmarks and Sec.~\ref{sec:conclusion} concludes.' should \emph{not} be presented as a standalone novelty claim.}
+
+{\color{red}\textbf{[NOVELTY AUDIT 2026 -- defensible contribution]} The strongest novelty that remains apparent from the verified literature is the \emph{systematic Johnson-association-scheme study}: constructing the full family of distance-class unions $A_T$ between the Johnson and complete feasible graphs, benchmarking those mixers under a controlled fixed-cardinality objective, and exposing the non-monotonic relationship among density, spectral structure, optimization behavior, and implementation locality. The mixer--walk lemma can still serve as a useful unifying dictionary, but its mathematical content is modest and its scope must remain restricted to its stated hypotheses.}
+
+Related applications also show that QWOA/structured-walk design extends beyond portfolio optimization, including vehicle routing~\cite{Bennett2021} and structured multivariable search~\cite{Matwiejew2023}; these should be used as context rather than evidence of novelty.
+
 Section~\ref{sec:preliminaries} fixes the portfolio problem, the
 feasible-subspace ansatz, and the graph families used throughout.
     Section~\ref{sec:mixers-as-walks} gives the mixer--walk correspondence and applies it to the
