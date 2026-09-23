@@ -15,7 +15,11 @@ Portfolio selection provides a constrained binary optimization problem of
 practical interest. Each binary variable records whether an asset is held, and
 a cardinality constraint fixes the number of selected assets. Quantum
 approaches have been studied using QAOA and related variational
-methods~\cite{Hodson2019,Slate2021}. For fixed cardinality the ansatz can be
+methods~\cite{Hodson2019,Slate2021}.
+
+Recent work on multiclass portfolio optimization also uses parameterized Dicke-state ans\"atze to enforce class-wise fixed-cardinality constraints directly in the variational state, avoiding penalty calibration~\cite{Scursulim2026}.
+
+{\color{red}\textbf{[LITERATURE UPDATE -- directly relevant portfolio/Dicke work]} Scursulim et al.~\cite{Scursulim2026} is directly relevant to the manuscript because it studies feasible-subspace portfolio optimization with Dicke-state structure and explicitly compares classical optimizers. It should be cited here to distinguish the present contribution: the current manuscript studies \emph{mixer/walk geometry within a fixed-cardinality feasible subspace}, rather than proposing Dicke-state constraint encoding itself.} For fixed cardinality the ansatz can be
 built directly in the Hamming-weight sector of the allowed portfolios, which
 avoids sampling infeasible configurations by construction. The quantum
 alternating operator ansatz permits mixers adapted to the feasible
