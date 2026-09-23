@@ -73,7 +73,6 @@ floatfix,
 \usepackage{subcaption}
 \usepackage{float} % for [H]
 \usepackage{booktabs}
-\usepackage[most]{tcolorbox}
 
 \usepackage{algorithm}
 \usepackage{algpseudocode}
@@ -108,9 +107,6 @@ floatfix,
 \newcommand{\mL}{\mathcal{L}}
 \newcommand{\F}{\mathcal{F}}
 \newcommand{\HF}{\mathcal{H}_{\F}}
-\newcommand{\reviewmajor}[2][]{\begin{tcolorbox}[colframe=red!80!black,colback=red!3!white,title={\textcolor{red!80!black}{MAJOR REVIEW COMMENT #1}},fonttitle=\bfseries,breakable]\color{red!80!black}#2\end{tcolorbox}}
-\newcommand{\reviewexperiment}[2][]{\begin{tcolorbox}[colframe=red!80!black,colback=red!1!white,title={\textcolor{red!80!black}{VALIDATION / NEW EXPERIMENT #1}},fonttitle=\bfseries,breakable]\color{red!80!black}#2\end{tcolorbox}}
-\newcommand{\reviewreplace}[2]{\begin{tcolorbox}[colframe=red!75!black,colback=red!2!white,title={\textcolor{red!80!black}{REPLACE / REWRITE}},fonttitle=\bfseries,breakable]\textcolor{red!80!black}{\textbf{Current claim:} #1\par\medskip\textbf{Suggested text:} #2}\end{tcolorbox}}
 
 
 \usepackage{caption}
@@ -121,7 +117,7 @@ floatfix,
 
 \preprint{APS/123-QED}
 
-\title{When is a QAOA mixer a quantum walk, and which walk should it be?}% Force line breaks with \\
+\title{When is a QAOA mixer a quantum walk, and which walk should it be?\\\large Inline annotated review version}% Force line breaks with \\
 %\thanks{A footnote to the article title}%
 
 \author{Pedro Linck}
@@ -154,7 +150,7 @@ optimization algorithm (QWOA) are usually presented as separate
 constructions, the first through Pauli mixers and the second through a graph
 on the feasible set. The two coincide in particular cases, but the
 correspondence has been established instance by instance. We state it in
-general, for an arbitrary feasibility-preserving mixer, and use it to identify
+\textcolor{red}{general, for an arbitrary feasibility-preserving mixer}\footnote{\textcolor{red}{REVIEW: This is too broad for Lemma~\ref{lem:dictionary}, which also assumes constant diagonal and real same-sign off-diagonal entries. Suggested: ``under explicit structural conditions for a broad class of feasibility-preserving mixers.''}}, and use it to identify
 the mixers in current use as walks on named graphs. The complete-graph $XY$
 mixer with a Dicke initial state is exactly a walk on the Johnson graph
 $J(n,k)$, with no residual phase and no rescaling. The Grover mixer and the
@@ -171,49 +167,22 @@ of the Johnson scheme. Benchmarking fixed-cardinality portfolio selection
 across that family, we find the Johnson mixer on par with or ahead of the
 denser members at $(12,3)$ and $(16,4)$ at every depth tested, and behind them
 by a factor of about $1.5$ at $(20,5)$ on six instances, while the complete
-graph is worse than all of them on every metric at the depths reachable on
-near-term hardware. It is also the more expensive of the two to realise, by a
-factor of eight in \textsc{cnot} count and thirty to sixty in circuit depth,
-against a single Trotter step of the $XY$ mixer.
+graph is worse than all of them on every metric at the \textcolor{red}{depths reachable on near-term hardware}\footnote{\textcolor{red}{REVIEW: Not demonstrated by ideal statevector simulation. Suggested: ``shallow variational depths investigated here.'' Hardware reachability requires noise, routing, shots, and/or device evidence.}}. It is also \textcolor{red}{the more expensive of the two to realise, by a factor of eight in \textsc{cnot} count and thirty to sixty in circuit depth, against a single Trotter step of the $XY$ mixer}\footnote{\textcolor{red}{REVIEW: This is a raw exact-versus-approximate comparison. Quantitative resource superiority should be stated only after matching Trotter approximation error.}}.
 \end{abstract}
 %\keywords{Suggested keywords}%Use showkeys class option if keyword
                               %display desired
 \maketitle
 
 %\tableofcontents
-\reviewreplace{``We state it in general, for an arbitrary feasibility-preserving mixer.''}{``We give explicit structural conditions under which a feasibility-preserving mixer is equivalent, up to an energy shift and a reparametrization of the mixing angle, to a continuous-time quantum walk on a real positively weighted graph over the feasible set.''}
-\reviewmajor[-- Abstract claims]{The lemma requires constant diagonal entries and real same-sign off-diagonal entries, so it does not cover an arbitrary feasibility-preserving mixer. Replace near-term-hardware claims by ``shallow variational depths investigated here'' unless noise-aware/device experiments are added. The CNOT/depth factors compare exact Grover evolution with one approximate Trotter step and are not an equal-accuracy comparison.}
+\input{manuscript/introduction_review}
 
-\input{manuscript/introduction}
-\reviewmajor[-- Novelty]{Position the novelty as the full package: mixer--walk dictionary under explicit hypotheses, identification of constrained mixers, Johnson-scheme design space, and empirical/spectral/locality tradeoffs; the adjacency-plus-identity observation alone is close to definitional.}
+\input{manuscript/preliminaries_review}
 
-\input{manuscript/preliminaries}
-\reviewreplace{``$G_{\F}$ must be connected, or the reachable set is confined to the connected component containing the support of $\ket{s_\F}$.''}{``If $G_{\F}$ is disconnected, its connected components define invariant subspaces of the alternating dynamics. Neither the mixer nor the diagonal cost Hamiltonian transfers amplitude between components. The uniform feasible state has support on all components.''}
-\reviewreplace{``the uniform superposition is the mixer ground state throughout''}{``Every $A_T$ is regular and vertex-transitive, so the uniform superposition is an eigenvector with eigenvalue equal to the degree (the principal adjacency eigenvalue for $H_M=A_T$).''}
-\reviewmajor[-- Sign convention]{With $H_M=A_T$, the uniform state is the principal/top adjacency eigenvector, not generally the ground state. It is a ground state for $H_M=-A_T$. Use one convention consistently.}
+\input{manuscript/dicke_grover_qwoa_review}
 
-\input{manuscript/dicke_grover_qwoa}
-\reviewreplace{``Penalty formulations fall into this class ... since the penalty contributes a configuration-dependent diagonal.''}{``A configuration-dependent diagonal term added directly to the mixer produces a quantum walk with an on-site potential. This should not be confused with standard penalty-QAOA, where constraint penalties are incorporated in the cost Hamiltonian while the mixer is unchanged.''}
-\reviewmajor[-- Mathematical scope]{Lemma~\ref{lem:dictionary} does not classify arbitrary feasibility-preserving mixers. Either narrow the claims or extend the framework to on-site potentials, signed weighted graphs, and complex magnetic/chiral walks with cycle-flux conditions.}
+\input{manuscript/results_review}
 
-\input{manuscript/results}
-\reviewmajor[-- Optimizer reliability]{The reported median factor $1.1$--$1.8$ by which exhaustive $p=1$ search can beat the optimizer is large enough that depth rankings may partly measure optimizer difficulty. Until calibrated, qualify superiority claims with ``under the present optimization protocol.''}
-\reviewexperiment[-- Optimizer calibration]{Use $p=1$ as a gold standard. Compare COBYLA with differential evolution or CMA-ES and another multistart local method; report optimization gap by mixer. Repeat a representative subset at $p=2$--$4$ with larger restart budgets and test ranking stability.}
-\reviewexperiment[-- $q$ and screening robustness]{Document the 30-instance $q=0.75$ pilot and any overlap with evaluation data. Add a $p=1$ sweep over several $q$ values and report an unscreened benchmark in addition to the hard-instance conditioned sample.}
-\reviewreplace{``At $(20,5)$ ... the ordering inverts.''}{``At $(20,5)$, within the six-instance subset and for $p\le4$, the observed ordering among the non-complete mixers differs from that at $(16,4)$. Given the small sample and overlapping uncertainty intervals, this is exploratory and does not establish a size-dependent reversal.''}
-\reviewmajor[-- Statistics]{With up to 31 graphs, uncorrected pairwise sign tests should not support confirmatory claims. Prefer paired effect sizes/bootstrap intervals and use a stated correction such as Holm--Bonferroni for formal multiple tests.}
-\reviewexperiment[-- Spectral/DLA mechanism]{For tractable sizes compute or bound $\dim\operatorname{Lie}\{iH_C,iA_T\}$ for representative mixers. At minimum report spectral degeneracies, gaps, and numbers of distinct eigenvalues for every $A_T$, and relate them to $P_*$ and $\Delta_{\rm norm}$.}
-\reviewexperiment[-- Geometry versus degree]{Relate performance to descriptors beyond degree: distinct eigenvalues, spectral gap, diameter where meaningful, distance-class composition, and mixing/localization diagnostics.}
-\reviewreplace{Claims that $K_{\F}$ is intrinsically eight times more expensive in CNOTs and thirty-to-sixty times deeper than Johnson.}{``For the compiled circuits considered here, an exact implementation of $K_{\F}$ uses substantially more gates and depth than one first-order Trotter step of the Johnson $XY$ mixer. Since the latter is approximate, these raw factors are not an equal-accuracy resource comparison.''}
-\reviewexperiment[-- Equal-accuracy resources]{Compare exact $U_{XY}(\beta)$ with product formulas for $r=1,2,4,8,\ldots$ at representative optimized angles. Report state infidelity or changes in final $P_*$ and energy and compare CNOT/depth at matched accuracy. Add finite-shot/noise/routing experiments if near-term claims are retained.}
-
-\input{manuscript/conclusion}
-\reviewreplace{``Where the feasible set has combinatorial structure, discarding it is costly in both quality and circuit resources.''}{``For the fixed-cardinality Johnson-scheme instances studied here, the complete feasible graph---which removes Johnson-distance information---is consistently the weakest endpoint under our numerical protocol. Its exact compiled implementation is also deeper than a single Trotter step of the Johnson mixer; establishing a resource advantage at matched implementation error remains open.''}
-\reviewreplace{Any conclusion implying that sparser mixers are generically better.}{``The data do not support a monotonic relation between edge density and performance. Instead, they show that complete mixing is a structurally exceptional endpoint and motivate the hypothesis that spectral and geometric properties, rather than connectivity alone, govern useful mixing.''}
-\reviewmajor[-- Reproducibility]{Resolve every remaining CONFIRMAR marker, replace the repository placeholder with a permanent URL/DOI, freeze code/data versions, record dependencies, and provide a scripted reproduction path for every table and figure.}
-\section*{Peer-review summary}
-\reviewmajor[-- Overall assessment]{Potentially publishable, but substantial revision is required. Highest-priority issues: overbroad mixer--walk scope; penalty-QAOA/mixer-potential conflation; ground-state sign convention; optimizer reliability; small-sample/multiple-comparison interpretation; and unequal-accuracy circuit comparison. Spectral/DLA and Trotter-convergence analyses could materially strengthen the paper.}
-\reviewexperiment[-- Minimum validation package]{Before submission: optimizer calibration; documented/independent $q$ pilot; $q$ sensitivity; screened versus unscreened results; multiple-comparison-aware paired statistics; spectral-degeneracy and, if feasible, DLA analysis; Trotter convergence and matched-error resource comparison; and either noise-aware endpoint simulations or removal of NISQ/hardware-performance language.}
+\input{manuscript/conclusion_review}
 
 \nocite*
 \bibliography{references}
