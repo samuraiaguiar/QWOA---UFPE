@@ -207,6 +207,8 @@ by $e^{-i\beta A_T}$, but we have not established it.
 
 {\color{red}\textbf{[REVIEW -- mechanism not validated]} This is potentially central. At minimum report distinct eigenvalues, multiplicities, and gaps for every $A_T$. Stronger: compute/bound $\dim\mathrm{Lie}\{iH_C,iA_T\}$ on tractable instances and correlate with performance.}
 
+{\color{red}\textbf{[LITERATURE UPDATE -- DLA interpretation]} Two 2026 results make this experiment substantially more important. Bridi et al.~\cite{Bridi2026Expressivity} bound QWOA DLA dimension in terms of the number of distinct eigenvalues of the \emph{problem Hamiltonian}; Kordonowy and Leipold~\cite{Kordonowy2026} derive explicit DLAs for several $XY$-mixer topologies. Do not cite either result as proving the present conjecture about degeneracy of $A_T$: that implication is not established. Instead, use them to motivate a direct calculation of $\mathrm{Lie}\{iH_C,iA_T\}$ and to separate cost-spectrum limitations from mixer-spectrum/topology effects.}
+
 $K_{\F}$ is alone in the third tier at $0.27$, $0.15$ and $0.085$ of
 $J(n,k)$ across the three sizes, beaten on every instance everywhere, in
 all three metrics.
@@ -426,6 +428,8 @@ is cheaper for any Trotter order $r\lesssim8$ and by a factor of $60$ in
 depth.
 
 {\color{red}\textbf{[REVIEW -- unmatched accuracy]} This compares exact Grover evolution with approximate Johnson evolution. Quantify Trotter convergence and compare resource counts at matched error.}
+
+{\color{red}\textbf{[LITERATURE UPDATE -- Trotter benchmark]} He et al.~\cite{He2023} already study the effect of Trotter approximation on $XY$-mixer QAOA performance, including ring/complete connectivity and noisy/hardware experiments. The manuscript should benchmark its Trotter-resource claim against that literature and avoid presenting Trotter sensitivity as an unexplored issue. A matched-error comparison remains a useful new experiment here because the present paper compares Johnson evolution with exact complete-feasible/Grover evolution.}
 
 The results are favourable, the whole cluster performs within $8\%$ of itself across two
 orders of magnitude in degree, so the sparsest and only two-local member
