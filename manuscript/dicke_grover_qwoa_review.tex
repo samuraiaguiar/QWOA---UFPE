@@ -248,6 +248,10 @@ The Dicke-state plus complete-$XY$ ansatz is therefore exactly QWOA on
 $J(n,k)$, with no global phase and no rescaling of $\beta$.
 \end{corollary}
 
+{\color{red}\textbf{[NOVELTY AUDIT 2026 -- Johnson identity is prior art]} This operator identity is correct, but it is no longer defensible as a standalone novelty claim. Structurally, the $k$-token graph of $K_n$ is the Johnson graph in the token-graph literature~\cite{FabilaMonroy2012Token}; algorithmically, Min, Seo, and Heo~\cite{MinSeoHeo2026} explicitly state that an $XY$ mixer confines dynamics to Johnson-graph subspaces. Recast this corollary as part of the paper's unifying dictionary and use it to motivate the Johnson-scheme extension, which is the more distinctive contribution.}
+
+{\color{red}\textbf{[NOVELTY AUDIT 2026 -- prior XY topology studies]} Ring and complete $XY$ mixers and Dicke-state initialization were already compared in the quantum alternating-operator literature~\cite{Cook2019,Wang2020,He2023}. Kordonowy and Leipold~\cite{Kordonowy2026} further analyze the dynamical Lie algebras of $XY$-mixer topologies. Therefore the manuscript should avoid implying that topology dependence of $XY$ mixers itself is new; what is new must be tied to the induced feasible-state graph/Johnson-scheme family and the controlled sweep performed here.
+
 \begin{proof}
 Apply Proposition~\ref{prop:xy-hopping} with $E=\{\{i,j\}:i\neq j\}$: every
 pair is an edge, so $x\sim y$ iff
