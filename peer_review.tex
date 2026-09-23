@@ -19,6 +19,11 @@ The abstract and introduction describe the result as applying to an arbitrary fe
 
 The minimal revision is to say that the paper gives explicit structural conditions under which a feasibility-preserving mixer is equivalent, up to an energy shift and parameter reparametrization, to a continuous-time quantum walk on a positively weighted feasible graph. A stronger mathematical extension could include on-site potentials, signed graphs, and magnetic/chiral walks with gauge/cycle-flux conditions.
 
+\subsection*{2A. Novelty audit against the 2024--2026 literature}
+A current literature audit materially narrows several novelty claims. Complete/ring $XY$ mixers with Dicke-state initialization predate this manuscript (Cook et al., 2020; Wang et al., 2020), and He et al. (2023) directly study initial-state/mixer alignment, Trotterization, and hardware execution. Matwiejew and Wang (2024) already formulate graph-informed continuous-time-quantum-walk mixer design. Kordonowy and Leipold (2026) analyze the dynamical Lie algebras of $XY$-mixer topologies. Min, Seo, and Heo (2026) explicitly formulate $XY$-mixer evolution in Johnson-graph subspaces. Thus neither ``$XY$ topology matters'' nor ``complete-$XY$ fixed-weight dynamics is a Johnson-graph walk'' should be presented as a standalone first result.
+
+The contribution that still appears distinctive is the systematic use of the Johnson association scheme as a controlled mixer design space: the full sweep of distance-class unions between $J(n,k)$ and the complete feasible graph, paired comparisons on the same fixed-cardinality instances, and the attempt to connect performance to spectral structure and implementation locality. The paper should make this the center of its novelty statement.
+
 \subsection*{2. Novelty should be positioned around the full framework}
 Once the hypotheses of the lemma are imposed, the adjacency-plus-identity decomposition is close to definitional. The stronger contribution is the chain mixer structure $\to$ feasible graph $\to$ named graph families $\to$ Johnson scheme $\to$ performance/spectrum/locality. The paper should sell this package rather than the lemma alone.
 
