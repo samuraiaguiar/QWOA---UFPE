@@ -1,0 +1,117 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs,longtable,array,xcolor,amsmath,amssymb}
+\usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue,citecolor=blue]{hyperref}
+\definecolor{critical}{HTML}{8B1E3F}\definecolor{newgreen}{HTML}{176B3A}\definecolor{partial}{HTML}{9A6700}
+\newcommand{\prior}{\textcolor{critical}{\textbf{PRIOR ART}}}
+\newcommand{\novel}{\textcolor{newgreen}{\textbf{APPARENTLY NOVEL}}}
+\newcommand{\partialnovel}{\textcolor{partial}{\textbf{EXTENSION / CLARIFICATION}}}
+\title{\textbf{Novelty Map: QWOA, XY Mixers and Johnson-Scheme Mixer Design}\\\large Cross-analysis of manuscript results against the verified literature}
+\author{Technical literature and novelty audit}\date{23 September 2026}
+\begin{document}\maketitle
+\begin{abstract}
+This report cross-references the principal theoretical and numerical claims of
+\emph{When is a QAOA mixer a quantum walk, and which walk should it be?} against the verified bibliography maintained with the manuscript. The strongest defensible novelty is not the complete-$XY$/Johnson identity by itself, but the systematic use of the Johnson association scheme as a controlled mixer-design space and the empirical finding that feasible-graph connectivity is not monotonically related to optimization performance under the tested protocol.
+\end{abstract}
+
+\section{Executive conclusion}
+Constraint preservation, $XY$ mixers, Dicke-state initialization, ring-versus-complete $XY$ comparisons, graph-informed CTQW mixer design, and topology-dependent expressivity have direct antecedents \cite{Hadfield2019,Wang2020,Cook2019,He2023,Fuchs2022,Matwiejew2024,Kordonowy2026}. The complete-$XY$ fixed-Hamming-weight dynamics also has a pre-existing Johnson/token-graph interpretation \cite{FabilaMonroy2012Token,MinSeoHeo2026}. These are foundations, not headline novelty claims.
+
+The contribution that remains most distinctive is the systematic benchmarking of
+\[
+A_T=\sum_{j\in T}A_j,\qquad \emptyset\neq T\subseteq\{1,\ldots,k\},
+\]
+with $A_j$ the Johnson distance classes. This controlled family connects the Johnson graph to the complete feasible graph. The manuscript finds that increasing degree/density does not monotonically improve performance and that the complete feasible graph is a consistently weak endpoint under the tested protocol.
+
+\section{Claim-by-claim novelty map}
+\renewcommand{\arraystretch}{1.2}
+\begin{longtable}{p{0.27\textwidth}p{0.18\textwidth}p{0.45\textwidth}}
+\toprule \textbf{Claim/result} & \textbf{Status} & \textbf{Cross-analysis}\\ \midrule
+\endfirsthead
+\toprule \textbf{Claim/result} & \textbf{Status} & \textbf{Cross-analysis}\\ \midrule
+\endhead
+Constraint-preserving mixers & \prior & Established by Hadfield et al. and systematic constructions \cite{Hadfield2019,Fuchs2022,Fuchs2024}.\\
+$XY$ mixers for fixed cardinality & \prior & Established; ring/complete topology studied in \cite{Wang2020,Cook2019}.\\
+Dicke-state initialization & \prior & Predates this work \cite{Bartschi2019,Cook2019,He2023}; portfolio/Dicke precedent in \cite{Scursulim2026}.\\
+Ring-$XY$ vs complete-$XY$ & \prior & Directly compared previously \cite{Cook2019,Wang2020,He2023}.\\
+Topology affects expressivity/trainability & \prior & Prior evidence and explicit DLA analysis for $XY$ topologies \cite{Kordonowy2026}.\\
+Mixer-walk dictionary under explicit hypotheses & \partialnovel & QWOA already builds mixers from graphs \cite{Marsh2019,Marsh2020}; graph-to-mixer constructions and graph-informed design exist \cite{Fuchs2022,Matwiejew2024}. The reverse dictionary is useful but not universal.\\
+Complete-$XY$ at weight $k$ gives $J(n,k)$ & \prior & Follows from token-graph theory \cite{FabilaMonroy2012Token}; recent QAOA work describes $XY$ dynamics in Johnson subspaces \cite{MinSeoHeo2026}.\\
+Ring-$XY$ token graph and degree $2b(x)$ & \partialnovel & Token-graph construction is prior art \cite{FabilaMonroy2012Token,Carballosa2017Regularity}. The explicit cyclic-block formula was not identified as a prior quantum-optimization result in the audited set.\\
+Regularity classification & \partialnovel & Token-graph regularity is established \cite{Carballosa2017Regularity}; exact theorem priority requires careful combinatorics comparison.\\
+Grover equals complete-feasible QWOA up to phase/rescaling & \partialnovel & Ingredients predate this work \cite{Bartschi2020,Slate2021,Bridi2024}; explicit identity/rescaling is a useful clarification.\\
+Walk graph as design variable & \prior & Explicit in graph-informed QVA/QWOA literature \cite{Matwiejew2024,Marsh2019,Marsh2020}.\\
+Johnson association scheme as systematic mixer-design family & \novel & No equivalent systematic sweep was identified in the verified bibliography. This is the clearest structural novelty.\\
+Sweep of all nonempty $A_T$ at tested sizes & \novel & No matched exhaustive Johnson-scheme mixer sweep was identified.\\
+Performance not monotonic in degree/density & \novel & Strongest empirical result; scope must remain restricted to tested family, instances, depths, screening and optimizer.\\
+Complete feasible/Grover endpoint consistently weak & \novel & Bridi and Marquezino supply a compatible prior mechanism \cite{Bridi2024}, but not this controlled Johnson-scheme benchmark.\\
+Johnson universally superior to denser mixers & \textbf{NOT SUPPORTED} & Contradicted by the manuscript's $(20,5)$ limited-depth sample. Defensible claim is non-monotonicity, not sparse-is-better.\\
+Spectral degeneracy/DLA explains ordering & \textbf{HYPOTHESIS} & Motivated by \cite{Bridi2026Expressivity,Kordonowy2026}, but requires direct $\mathrm{Lie}\{iH_C,iA_T\}$ calculations.\\
+Intrinsic near-term circuit advantage & \textbf{NOT YET ESTABLISHED} & Current comparison mixes approximate Trotterized Johnson with exact Grover; matched-error resources are needed \cite{He2023,Awasthi2026Trotter}.\\
+\bottomrule
+\end{longtable}
+
+\section{What should explicitly be acknowledged as prior art}
+The revised paper should proactively state that feasibility-preserving $XY$ mixers are established \cite{Hadfield2019,Wang2020,Fuchs2022}; ring/complete $XY$ and Dicke initialization have been compared \cite{Cook2019,He2023}; complete-$XY$/Johnson has graph-theoretic and recent algorithmic antecedents \cite{FabilaMonroy2012Token,MinSeoHeo2026}; graph-informed CTQW design already exists \cite{Matwiejew2024}; and DLA-based expressivity analysis is not new as a methodology \cite{Bridi2026Expressivity,Kordonowy2026}.
+
+\section{What appears new}
+\subsection{Johnson association scheme as controlled mixer-design space}
+The strongest structural contribution is to replace isolated mixer choices by a family of Johnson distance-class unions. Each $T$ specifies which Johnson distances are traversable in one mixer step. This creates a controlled design space in which topology, degree, spectrum, distance structure and implementation locality can be compared while the feasible space is fixed.
+
+\subsection{Non-monotonicity with connectivity}
+The numerical evidence rejects a simple more-connected-is-better model. Large changes in degree need not generate comparable changes in performance; the complete graph is weak, while at the largest tested size Johnson itself is not the strongest non-complete member on the limited depth sample. Thus
+\[
+\text{mixer quality}\neq f(\text{degree alone}).
+\]
+
+\subsection{Complete mixing as an exceptional endpoint}
+Bridi and Marquezino \cite{Bridi2024} provide a plausible prior mechanism through permutation invariance/loss of landscape structure. The present manuscript contributes a controlled Johnson-scheme experiment locating the complete endpoint relative to intermediate graphs. Prior mechanism and new empirical evidence should be clearly separated.
+
+\section{What remains hypothesis rather than result}
+\subsection{Spectral/DLA mechanism}
+Report distinct eigenvalues, multiplicities and gaps for every $A_T$. For tractable sizes compute or bound
+\[
+\dim\operatorname{Lie}\{iH_C,iA_T\}.
+\]
+Then test whether these descriptors explain $P_*$, $P_{\leq5\%}$ and normalized energy better than degree alone \cite{Bridi2026Expressivity,Kordonowy2026}.
+
+\subsection{Optimizer robustness}
+The manuscript reports substantial $p=1$ optimization gaps. Scursulim et al. show strong optimizer dependence in a related Dicke-state portfolio setting \cite{Scursulim2026}. Add CMA-ES or differential evolution plus an independent multistart local method.
+
+\subsection{Circuit resources}
+Repeat the exact-Grover versus Trotterized-$XY$ comparison at matched approximation error, reporting state/observable error and CNOT/depth \cite{He2023,Awasthi2026Trotter}.
+
+\section{Recommended contribution statement}
+\begin{quote}
+We use an explicit mixer-walk dictionary to place several feasibility-preserving mixers in a common graph-theoretic language and then use the Johnson association scheme as a structured design space for fixed-cardinality mixers. By systematically benchmarking unions of Johnson distance classes between the Johnson and complete feasible graphs, we show that increasing feasible-state connectivity does not monotonically improve optimization performance under the tested protocol. The complete feasible graph is a consistently weak endpoint, while the relative ordering among non-complete mixers depends on problem size and depth. These results motivate spectral and Lie-algebraic properties, rather than graph density alone, as candidate descriptors of mixer quality.
+\end{quote}
+
+\section{Recommended scientific message}
+\begin{quote}
+\textbf{Feasible-state connectivity is an algorithm-design resource, but more connectivity is not necessarily better. Within the Johnson association scheme, mixer performance depends on the structure of the feasible-state walk rather than on graph density alone.}
+\end{quote}
+
+\section{Priority experiments before submission}
+\begin{enumerate}
+\item \textbf{Spectral/DLA validation:} descriptors for every $A_T$ and DLA dimension where tractable; correlate with performance.
+\item \textbf{Optimizer ablation:} global/evolutionary plus independent multistart local optimization.
+\item \textbf{Matched-error circuit comparison:} compare Trotterized Johnson and complete/Grover at comparable approximation error.
+\item \textbf{Unscreened sensitivity:} add a $p=1$ supplement on the full unscreened population.
+\item \textbf{Multiplicity-aware statistics:} paired effect sizes, bootstrap CIs and family-wise/FDR correction for formal multi-mixer tests.
+\end{enumerate}
+
+\section{Literature crosswalk by role}
+\textbf{Foundations/constrained QAOA:} \cite{Farhi2014,Hadfield2019,Wang2020,Fuchs2022,Fuchs2024}.\\
+\textbf{QWOA/graph-informed design:} \cite{Marsh2019,Marsh2020,Slate2021,Matwiejew2024,Qu2024,Bennett2026Nonvariational}.\\
+\textbf{XY topology/initialization/implementation:} \cite{Cook2019,He2023,Kordonowy2026,Awasthi2026Trotter,Bucher2026WarmStart}.\\
+\textbf{Grover/complete mixing:} \cite{Bartschi2020,Bridi2024,Slate2021,Qu2024}.\\
+\textbf{Johnson/token graphs:} \cite{FabilaMonroy2012Token,Carballosa2017Regularity,MinSeoHeo2026}.\\
+\textbf{Expressivity/DLA:} \cite{Bridi2026Expressivity,Kordonowy2026}.\\
+\textbf{Portfolio/Dicke context:} \cite{Hodson2019,Slate2021,He2023,Qu2024,Scursulim2026}.
+
+\section{Scope and confidence}
+APPARENTLY NOVEL means that no direct prior instance was identified in the verified bibliography assembled for this manuscript and the targeted audit behind it; it is not an absolute priority claim. The most important remaining search before submission is an exhaustive query combining Johnson association scheme, distance classes, QAOA, QWOA, quantum walk optimization and mixer design.
+
+\bibliographystyle{apsrev4-2}
+\bibliography{references}
+\end{document}
