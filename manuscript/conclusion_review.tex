@@ -1,39 +1,12 @@
 \section{\label{sec:conclusion}Conclusion}
 
-We studied feasible-subspace mixers for a fixed-cardinality binary portfolio
-problem, where the constraint confines the dynamics to a Hamming-weight sector
-and removes the probability leakage that penalty encodings
-incur~\cite{Hadfield2019,Slate2021}.
+We studied feasible-subspace mixers for a fixed-cardinality binary portfolio problem, where the constraint confines the dynamics to a Hamming-weight sector and removes the probability leakage that penalty encodings incur~\cite{Hadfield2019,Slate2021}.
 
-The theoretical contribution is a correspondence between some types of mixers and quantum walks. Lemma~\ref{lem:dictionary} states
-the conditions under which a feasibility-preserving mixer is the adjacency
-operator of a graph on the feasible set and identifies that graph, and
-Remark~\ref{rem:failure} records what the mixer generates when the conditions
-fail: an on-site potential term when the diagonal is not constant, and
-dynamics that is not that of any real-weighted walk when the off-diagonal
-phases do not cancel around cycles. The correspondence does not address the
-construction of subspace-preserving mixers, for which we refer to
-Refs.~\cite{Fuchs2022,Fuchs2024}.
+The theoretical contribution is a correspondence between some types of mixers and quantum walks. Lemma~\ref{lem:dictionary} states the conditions under which a feasibility-preserving mixer is the adjacency operator of a graph on the feasible set and identifies that graph, and Remark~\ref{rem:failure} records what the mixer generates when the conditions fail: an on-site potential term when the diagonal is not constant, and dynamics that is not that of any real-weighted walk when the off-diagonal phases do not cancel around cycles. The correspondence does not address the construction of subspace-preserving mixers, for which we refer to Refs.~\cite{Fuchs2022,Fuchs2024}.
 
-Three consequences follow. The complete $XY$ mixer with a Dicke initial state
-is exactly QWOA on the Johnson graph $J(n,k)$, with no global phase and no
-rescaling. The Grover mixer of Ref.~\cite{Bartschi2020} and the
-complete-graph QWOA mixer of Ref.~\cite{Slate2021} are the same operator up to
-a global phase and the rescaling $\theta=M\beta/2$; the equivalence is stated
-in Ref.~\cite{Bridi2024}. This transfers the
-structure-independence result of Ref.~\cite{Bridi2024} from the Grover mixer
-to complete-graph QWOA. And the graph on which the ring $XY$ mixer walks has
-vertex degree $2b(x)$ and is therefore not regular;
-Proposition~\ref{prop:xy-regularity} shows that this is the generic case, the
-regular mixers being those of the complete graph together with the star and
-its complement at $n=2k$.
+Three consequences follow. The complete $XY$ mixer with a Dicke initial state is exactly QWOA on the Johnson graph $J(n,k)$, with no global phase and no rescaling. The Grover mixer of Ref.~\cite{Bartschi2020} and the complete-graph QWOA mixer of Ref.~\cite{Slate2021} are the same operator up to a global phase and the rescaling $\theta=M\beta/2$; the equivalence is stated in Ref.~\cite{Bridi2024}. This transfers the structure-independence result of Ref.~\cite{Bridi2024} from the Grover mixer to complete-graph QWOA. And the graph on which the ring $XY$ mixer walks has vertex degree $2b(x)$ and is therefore not regular; Proposition~\ref{prop:xy-regularity} shows that this is the generic case, the regular mixers being those of the complete graph together with the star and its complement at $n=2k$.
 
-These place the two most widely used constrained mixers at opposite ends of
-a single family of regular, vertex-transitive graphs on $\F_{n,k}$.
-Reference~\cite{Slate2021} argues that the complete graph is likely the
-best choice of feasible mixer, by analogy with its optimality for spatial
-search~\cite{Zalka1999,Childs2004,Roland2003}. We find the opposite
-ordering, and not as a trend in density.
+These place the two most widely used constrained mixers at opposite ends of a single family of regular, vertex-transitive graphs on $\F_{n,k}$. Reference~\cite{Slate2021} argues that the complete graph is likely the best choice of feasible mixer, by analogy with its optimality for spatial search~\cite{Zalka1999,Childs2004,Roland2003}. We find the opposite ordering, and not as a trend in density.
 
 {\color{red}\textbf{[REVIEW -- scope]} Qualify as an empirical result under the present benchmark and optimization protocol, not a universal mixer ordering.}
 
@@ -43,59 +16,23 @@ ordering, and not as a trend in density.
 
 {\color{red}\textbf{[LITERATURE UPDATE -- broader QWOA state of the art]} QWOA itself is also evolving beyond the variational setting: Bennett et al.~\cite{Bennett2026Nonvariational} report a nonvariational QWOA benchmark for weighted MaxCut. Cite this to avoid framing current QWOA research as exclusively variational and to delimit the present paper to variational feasible-subspace mixer design.}
 
-After a single layer, most unions of distance classes are statistically
-indistinguishable from $J(n,k)$, whose degree is smaller by a factor of
-three to fourteen depending on the size. A few unions fall between that
-cluster and the complete graph, which sits furthest apart at every size and
-on all three figures of merit. With depth the separation widens, $J(n,k)$
-reaching $P_*=0.040$ against $0.008$ at $(16,4)$ and $p=6$. The complete
-graph is thus an outlier within the family rather than one end of a
-gradient, and it is the one member that discards all information about the
-combinatorial distance between configurations.
+After a single layer, most unions of distance classes are statistically indistinguishable from $J(n,k)$, whose degree is smaller by a factor of three to fourteen depending on the size. A few unions fall between that cluster and the complete graph, which sits furthest apart at every size and on all three figures of merit. With depth the separation widens, $J(n,k)$ reaching $P_*=0.040$ against $0.008$ at $(16,4)$ and $p=6$. The complete graph is thus an outlier within the family rather than one end of a gradient, and it is the one member that discards all information about the combinatorial distance between configurations.
 
-Circuit cost sharpens this. Only $J(n,k)$ is two-local; every union
-containing a class $j\ge2$ needs $2j$-body generators; and the complete
-graph, though exact, costs roughly eight times the \textsc{cnot}s of one
-Trotter step of the $XY$ mixer on $K_n$ at every size, and thirty to sixty
-times the depth.
+Circuit cost sharpens this. Only $J(n,k)$ is two-local; every union containing a class $j\ge2$ needs $2j$-body generators; and the complete graph, though exact, costs roughly eight times the \textsc{cnot}s of one Trotter step of the $XY$ mixer on $K_n$ at every size, and thirty to sixty times the depth.
 
-{\color{red}\textbf{[REVIEW -- matched-error requirement]} These are raw compilation ratios versus one approximate Trotter step, not equal-accuracy resource ratios.} Constraint preservation and connectivity are separate
-design choices, and the second is not settled by maximizing it.
+{\color{red}\textbf{[REVIEW -- matched-error requirement]} These are raw compilation ratios versus one approximate Trotter step, not equal-accuracy resource ratios.} Constraint preservation and connectivity are separate design choices, and the second is not settled by maximizing it.
 
 Two caveats on scope. Related Dicke-state portfolio work now also includes the multiclass VQE framework of Scursulim et al.~\cite{Scursulim2026}, which enforces diversification/cardinality constraints in the ansatz and explicitly studies optimizer dependence. This reinforces that the novelty here should be assigned to feasible-state mixer geometry and the Johnson-scheme comparison, not to Dicke-state feasibility encoding itself.
 
 {\color{red}\textbf{[LITERATURE UPDATE -- positioning]} Cite Ref.~\cite{Scursulim2026} when delimiting the portfolio contribution. It is especially useful because its CMA-ES/COBYLA comparison independently supports treating classical optimization as an experimental variable rather than an implementation detail.}
 
-The benchmark is not a reproduction of
-Ref.~\cite{Slate2021}, whose three-position encoding gives a different
-feasible set, so it tests the general recommendation rather than the
-specific result. And the ordering at the endpoints is what
-Ref.~\cite{Bridi2024} predicts; what is new is that the intermediate graphs
-do not interpolate between them.
+The benchmark is not a reproduction of Ref.~\cite{Slate2021}, whose three-position encoding gives a different feasible set, so it tests the general recommendation rather than the specific result. And the ordering at the endpoints is what Ref.~\cite{Bridi2024} predicts; what is new is that the intermediate graphs do not interpolate between them.
 
-Several limitations bound the conclusions. We use a single risk-aversion
-parameter, chosen because the fraction of instances surviving the hardness
-screen is strongly monotone in it, so the low-risk regime is excluded by
-construction. The ordering is not stable in system size: at $(20,5)$ and
-$p=4$ the leading mixers are $R_{23}$ and $R_{13}$ rather than $J(n,k)$, by
-a factor of about $1.5$ in $P_*$, and six instances cannot settle whether
-this is a reversal. Only the position of the complete graph survives every
-size tested.
+Several limitations bound the conclusions. We use a single risk-aversion parameter, chosen because the fraction of instances surviving the hardness screen is strongly monotone in it, so the low-risk regime is excluded by construction. The ordering is not stable in system size: at $(20,5)$ and $p=4$ the leading mixers are $R_{23}$ and $R_{13}$ rather than $J(n,k)$, by a factor of about $1.5$ in $P_*$, and six instances cannot settle whether this is a reversal. Only the position of the complete graph survives every size tested.
 
-{\color{red}\textbf{[REVIEW -- optimizer caveat]} Add ``under the present optimization protocol,'' because the manuscript itself reports substantial optimizer gaps at $p=1$.} Optimized values at every depth are lower bounds: on common
-instances the exhaustive single-layer scan exceeds the optimizer at $p=1$
-by a median factor of $1.1$ to $1.8$, so part of any gap between mixers may
-reflect the difficulty of locating good parameters rather than their
-absence. Finally, every member of the family here is regular and
-vertex-transitive, which is what makes the comparison clean and also what
-confines it, since Lemma~\ref{lem:dictionary} admits feasible graphs that
-are neither. How the effect behaves beyond exact simulation is open, as is
-the circuit-level cost of feasible mixers under realistic noise.
+{\color{red}\textbf{[REVIEW -- optimizer caveat]} Add ``under the present optimization protocol,'' because the manuscript itself reports substantial optimizer gaps at $p=1$.} Optimized values at every depth are lower bounds: on common instances the exhaustive single-layer scan exceeds the optimizer at $p=1$ by a median factor of $1.1$ to $1.8$, so part of any gap between mixers may reflect the difficulty of locating good parameters rather than their absence. Finally, every member of the family here is regular and vertex-transitive, which is what makes the comparison clean and also what confines it, since Lemma~\ref{lem:dictionary} admits feasible graphs that are neither. How the effect behaves beyond exact simulation is open, as is the circuit-level cost of feasible mixers under realistic noise.
 
 \section*{Data and code availability}
 % CONFIRMAR: inserir DOI/URL do repositorio
 
-{\color{red}\textbf{[REVIEW -- submission blocker]} Replace with a permanent repository release/DOI, freeze code/data, record dependency versions, and provide a scripted reproduction path.}
-The code that generates the instances, runs the simulations and produces
-every figure and table of this work, together with the resulting data, is
-available at \url{<repository>}.
+{\color{red}\textbf{[REVIEW -- submission blocker]} Replace with a permanent repository release/DOI, freeze code/data, record dependency versions, and provide a scripted reproduction path.} The code that generates the instances, runs the simulations and produces every figure and table of this work, together with the resulting data, is available at \url{<repository>}.
