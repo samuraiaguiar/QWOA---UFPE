@@ -35,6 +35,14 @@ best choice of feasible mixer, by analogy with its optimality for spatial
 search~\cite{Zalka1999,Childs2004,Roland2003}. We find the opposite
 ordering, and not as a trend in density.
 
+{\color{red}\textbf{[REVIEW -- scope]} Qualify as an empirical result under the present benchmark and optimization protocol, not a universal mixer ordering.}
+
+{\color{red}\textbf{[LITERATURE UPDATE -- revised positioning]} In light of Matwiejew and Wang~\cite{Matwiejew2024}, He et al.~\cite{He2023}, Kordonowy and Leipold~\cite{Kordonowy2026}, and Bridi et al.~\cite{Bridi2026Expressivity}, the strongest defensible message is not that sparsity or Johnson connectivity is universally superior. A stronger literature-aligned conclusion is that feasible-state graph geometry, spectrum, initial-state alignment, expressivity/trainability, and implementation error jointly determine mixer quality; the present Johnson-scheme sweep isolates one controlled family in which complete feasible mixing is a consistently weak endpoint under the tested protocol.}
+
+{\color{red}\textbf{[NOVELTY AUDIT 2026 -- final positioning]} After including the 2026 literature, the paper should explicitly state what is \emph{not} new: (i) constraint-preserving $XY$ mixers; (ii) ring versus complete-$XY$ topology comparisons; (iii) the structural Johnson-graph interpretation of fixed-weight complete-$XY$ dynamics; (iv) graph-informed CTQW mixer design in general; and (v) DLA-based expressivity analysis as a methodology. The defensible novelty is the systematic Johnson-association-scheme interpolation/sweep and the resulting controlled evidence that increasing feasible-graph density is not monotonically beneficial, together with the proposed link among distance-class structure, spectrum, optimizer behavior, and circuit locality.}
+
+{\color{red}\textbf{[LITERATURE UPDATE -- broader QWOA state of the art]} QWOA itself is also evolving beyond the variational setting: Bennett et al.~\cite{Bennett2026Nonvariational} report a nonvariational QWOA benchmark for weighted MaxCut. Cite this to avoid framing current QWOA research as exclusively variational and to delimit the present paper to variational feasible-subspace mixer design.}
+
 After a single layer, most unions of distance classes are statistically
 indistinguishable from $J(n,k)$, whose degree is smaller by a factor of
 three to fourteen depending on the size. A few unions fall between that
@@ -49,10 +57,16 @@ Circuit cost sharpens this. Only $J(n,k)$ is two-local; every union
 containing a class $j\ge2$ needs $2j$-body generators; and the complete
 graph, though exact, costs roughly eight times the \textsc{cnot}s of one
 Trotter step of the $XY$ mixer on $K_n$ at every size, and thirty to sixty
-times the depth. Constraint preservation and connectivity are separate
+times the depth.
+
+{\color{red}\textbf{[REVIEW -- matched-error requirement]} These are raw compilation ratios versus one approximate Trotter step, not equal-accuracy resource ratios.} Constraint preservation and connectivity are separate
 design choices, and the second is not settled by maximizing it.
 
-Two caveats on scope. The benchmark is not a reproduction of
+Two caveats on scope. Related Dicke-state portfolio work now also includes the multiclass VQE framework of Scursulim et al.~\cite{Scursulim2026}, which enforces diversification/cardinality constraints in the ansatz and explicitly studies optimizer dependence. This reinforces that the novelty here should be assigned to feasible-state mixer geometry and the Johnson-scheme comparison, not to Dicke-state feasibility encoding itself.
+
+{\color{red}\textbf{[LITERATURE UPDATE -- positioning]} Cite Ref.~\cite{Scursulim2026} when delimiting the portfolio contribution. It is especially useful because its CMA-ES/COBYLA comparison independently supports treating classical optimization as an experimental variable rather than an implementation detail.}
+
+The benchmark is not a reproduction of
 Ref.~\cite{Slate2021}, whose three-position encoding gives a different
 feasible set, so it tests the general recommendation rather than the
 specific result. And the ordering at the endpoints is what
@@ -66,7 +80,9 @@ construction. The ordering is not stable in system size: at $(20,5)$ and
 $p=4$ the leading mixers are $R_{23}$ and $R_{13}$ rather than $J(n,k)$, by
 a factor of about $1.5$ in $P_*$, and six instances cannot settle whether
 this is a reversal. Only the position of the complete graph survives every
-size tested. Optimized values at every depth are lower bounds: on common
+size tested.
+
+{\color{red}\textbf{[REVIEW -- optimizer caveat]} Add ``under the present optimization protocol,'' because the manuscript itself reports substantial optimizer gaps at $p=1$.} Optimized values at every depth are lower bounds: on common
 instances the exhaustive single-layer scan exceeds the optimizer at $p=1$
 by a median factor of $1.1$ to $1.8$, so part of any gap between mixers may
 reflect the difficulty of locating good parameters rather than their
@@ -78,6 +94,8 @@ the circuit-level cost of feasible mixers under realistic noise.
 
 \section*{Data and code availability}
 % CONFIRMAR: inserir DOI/URL do repositorio
+
+{\color{red}\textbf{[REVIEW -- submission blocker]} Replace with a permanent repository release/DOI, freeze code/data, record dependency versions, and provide a scripted reproduction path.}
 The code that generates the instances, runs the simulations and produces
 every figure and table of this work, together with the resulting data, is
 available at \url{<repository>}.

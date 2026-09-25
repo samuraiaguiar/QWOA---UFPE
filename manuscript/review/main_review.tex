@@ -19,7 +19,8 @@
 %  4)  latex apssamp.tex
 %
 \documentclass[%
-reprint, superscriptaddress,
+ reprint,
+superscriptaddress,
 %groupedaddress,    
 %unsortedaddress,
 %runinaddress,
@@ -29,12 +30,15 @@ reprint, superscriptaddress,
 %nofootinbib,
 %nobibnotes,
 %bibnotes,
-amsmath,amssymb, aps, pra,
+ amsmath,amssymb,
+ aps,
+ pra,
 %prb,
 %rmp,
 %prstab,
 %prstper,
-floatfix, ]{revtex4-2}
+floatfix,
+]{revtex4-2}
 
 \usepackage{graphicx}% Include figure files
 \usepackage{dcolumn}% Align table columns on decimal point
@@ -128,7 +132,7 @@ floatfix, ]{revtex4-2}
 
 \author{Samuraí Brito}
 \affiliation{Instituto de Ciência e Tecnologia Itaú, São Paulo, Brazil}
-
+    
 \author{Nadja K. Bernardes}
 \affiliation{Departamento de Física, Centro de Ciências Exatas e da Natureza, Universidade Federal de Pernambuco, Recife-PE, Brazil, 50670-901}
 
@@ -141,22 +145,44 @@ floatfix, ]{revtex4-2}
              %  but any date may be explicitly specified
 
 \begin{abstract}
-The quantum approximate optimization algorithm (QAOA) and the quantum walk optimization algorithm (QWOA) are usually presented as separate constructions, the first through Pauli mixers and the second through a graph on the feasible set. The two coincide in particular cases, but the correspondence has been established instance by instance. We state it in \textcolor{red}{general, for an arbitrary feasibility-preserving mixer}\footnote{\textcolor{red}{REVIEW: This is too broad for Lemma~\ref{lem:dictionary}, which also assumes constant diagonal and real same-sign off-diagonal entries. Suggested: ``under explicit structural conditions for a broad class of feasibility-preserving mixers.''}}, and use it to identify the mixers in current use as walks on named graphs. The complete-graph $XY$ mixer with a Dicke initial state is exactly a walk on the Johnson graph $J(n,k)$, with no residual phase and no rescaling. The Grover mixer and the complete-graph QWOA mixer are the same operator, up to a global phase and a rescaling of the mixing parameter. The ring $XY$ mixer walks on a graph that is not regular, whose vertex degree we give in closed form; we classify the connectivity graphs whose mixer is regular, for $2\le k\le n-2$ only the complete graph, except at $n=2k$, where the star and its complement also qualify, and we show that $J(n,k)$ is the sparsest graph on the feasible set invariant under permutations of the assets at the sizes considered here. The Johnson graph and the complete graph are the sparse and dense endpoints of a family of regular, vertex-transitive graphs obtained from the distance classes of the Johnson scheme. Benchmarking fixed-cardinality portfolio selection across that family, we find the Johnson mixer on par with or ahead of the denser members at $(12,3)$ and $(16,4)$ at every depth tested, and behind them by a factor of about $1.5$ at $(20,5)$ on six instances, while the complete graph is worse than all of them on every metric at the \textcolor{red}{depths reachable on near-term hardware}\footnote{\textcolor{red}{REVIEW: Not demonstrated by ideal statevector simulation. Suggested: ``shallow variational depths investigated here.'' Hardware reachability requires noise, routing, shots, and/or device evidence.}}. It is also \textcolor{red}{the more expensive of the two to realise, by a factor of eight in \textsc{cnot} count and thirty to sixty in circuit depth, against a single Trotter step of the $XY$ mixer}\footnote{\textcolor{red}{REVIEW: This is a raw exact-versus-approximate comparison. Quantitative resource superiority should be stated only after matching Trotter approximation error.}}.
+The quantum approximate optimization algorithm (QAOA) and the quantum walk
+optimization algorithm (QWOA) are usually presented as separate
+constructions, the first through Pauli mixers and the second through a graph
+on the feasible set. The two coincide in particular cases, but the
+correspondence has been established instance by instance. We state it in
+\textcolor{red}{general, for an arbitrary feasibility-preserving mixer}\footnote{\textcolor{red}{REVIEW: This is too broad for Lemma~\ref{lem:dictionary}, which also assumes constant diagonal and real same-sign off-diagonal entries. Suggested: ``under explicit structural conditions for a broad class of feasibility-preserving mixers.''}}, and use it to identify
+the mixers in current use as walks on named graphs. The complete-graph $XY$
+mixer with a Dicke initial state is exactly a walk on the Johnson graph
+$J(n,k)$, with no residual phase and no rescaling. The Grover mixer and the
+complete-graph QWOA mixer are the same operator, up to a global phase and a
+rescaling of the mixing parameter. The ring $XY$ mixer walks on a graph that
+is not regular, whose vertex degree we give in closed form; we classify the
+connectivity graphs whose mixer is regular, for $2\le k\le n-2$ only the
+complete graph, except at $n=2k$, where the star and its complement also
+qualify, and we show that $J(n,k)$ is the sparsest graph on the feasible set
+invariant under permutations of the assets at the sizes considered here. The
+Johnson graph and the complete graph are the sparse and dense endpoints of a
+family of regular, vertex-transitive graphs obtained from the distance classes
+of the Johnson scheme. Benchmarking fixed-cardinality portfolio selection
+across that family, we find the Johnson mixer on par with or ahead of the
+denser members at $(12,3)$ and $(16,4)$ at every depth tested, and behind them
+by a factor of about $1.5$ at $(20,5)$ on six instances, while the complete
+graph is worse than all of them on every metric at the \textcolor{red}{depths reachable on near-term hardware}\footnote{\textcolor{red}{REVIEW: Not demonstrated by ideal statevector simulation. Suggested: ``shallow variational depths investigated here.'' Hardware reachability requires noise, routing, shots, and/or device evidence.}}. It is also \textcolor{red}{the more expensive of the two to realise, by a factor of eight in \textsc{cnot} count and thirty to sixty in circuit depth, against a single Trotter step of the $XY$ mixer}\footnote{\textcolor{red}{REVIEW: This is a raw exact-versus-approximate comparison. Quantitative resource superiority should be stated only after matching Trotter approximation error.}}.
 \end{abstract}
 %\keywords{Suggested keywords}%Use showkeys class option if keyword
                               %display desired
 \maketitle
 
 %\tableofcontents
-\input{manuscript/introduction_review}
+\input{introduction_review}
 
-\input{manuscript/preliminaries_review}
+\input{preliminaries_review}
 
-\input{manuscript/dicke_grover_qwoa_review}
+\input{dicke_grover_qwoa_review}
 
-\input{manuscript/results_review}
+\input{results_review}
 
-\input{manuscript/conclusion_review}
+\input{conclusion_review}
 
 \bibliography{references}
 

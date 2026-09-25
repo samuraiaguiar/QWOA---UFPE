@@ -1,0 +1,139 @@
+\section{\label{sec:results}Results}
+
+\subsection{Single-instance benchmark}
+
+Table~\ref{tab:single-instance-compact} summarizes the five-asset benchmark.
+The table reports only the metrics that distinguish the methods: graph size,
+optimal-sampling probability, and expected original cost. The feasibility
+probability is not repeated because all feasible QWOA mixers have
+\(P_{\rm feasible}=1\) by construction. The Johnson mixer gives the largest optimal-sampling probability in this
+instance, whereas the complete-graph mixer and the Dicke+Grover implementation \gabriel{It's probably worth clarifying somewhere what's the difference between Dicke+Grover and complete/Grover.}
+give lower and comparable values. Since these two mixers are analytically
+equivalent at the ideal unitary level, the remaining numerical difference
+should be attributed to implementation details or to the classical optimization
+procedure.
+
+\input{manuscript/table_single_instance}
+
+The penalty-QAOA baseline behaves differently because the transverse-field
+mixer does not preserve the cardinality constraint. Table~\ref{tab:penalty-scan}
+shows that changing the penalty strength affects both feasibility and
+optimal-sampling probability. In this instance, increasing the penalty does not
+monotonically improve performance: large penalty values suppress infeasible
+states only partially and can make the optimization landscape harder to
+navigate. \gabriel{I'm not sure I'd use space for reporting results on penalty-tuning for the baseline. This is very well-explored in the literature and there are no surprises here. We could just say that we tried all these different $\lambda$ values and found that 0.1 worked best for both feasibility and solution quality.}
+
+\input{manuscript/table_penalty_scan}
+
+\subsection{Extended benchmark over windows, sizes, depths, and seeds}
+
+The extended benchmark provides the main numerical evidence, within the small
+and moderate feasible spaces considered here, that feasible-graph geometry can
+affect performance beyond the illustrative five-asset example. Table~\ref{tab:aggregate-depth} aggregates the best result obtained within each
+instance--method--depth group, after optimizing over random initializations and,
+for the penalty-QAOA baseline, over the scanned penalty strengths. The Johnson and lightly weighted
+Johnson mixers obtain larger \(P_\star\) and smaller normalized gaps than the
+complete/Grover mixer. The penalty-QAOA baseline improves with depth, but
+remains below the best feasible-walk methods in the tested instances.
+
+\input{manuscript/table_aggregate_depth}
+
+Figure~\ref{fig:depth-scaling} shows the same trend as a function of depth.
+The complete/Grover mixer improves with \(p\), but remains below Johnson-type
+mixers. The weighted Johnson mixer with \(\alpha=0.25\) performs comparably to,
+and at depth \(p=3\) slightly better than, the unweighted Johnson mixer. This
+suggests that including mild cost-landscape information in the feasible graph
+can be useful, while overly strong weighting is not necessarily beneficial \gabriel{Given the size of the error bars, I'd hesitate to claim this}.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.98\linewidth]{figures/depth_scaling_poptimal.pdf}
+\caption{Depth scaling of the optimal-sampling probability, averaged over the
+tested market windows, asset-set sizes, and cardinalities after selecting the
+best run within each instance--method--depth group. Error bars denote one
+standard deviation over the grouped instances.\gabriel{These error bars are huge. Do they get smaller if we make multiple plots, one for each instance class (size+cardinality)?}}
+\label{fig:depth-scaling}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.98\linewidth]{figures/depth_scaling_gap.pdf}
+\caption{Depth scaling of the normalized cost gap. Smaller values indicate
+better expected feasible cost.}
+\label{fig:gap-scaling}
+\end{figure}
+
+\subsection{Weighted Johnson graphs}
+
+The weighted Johnson extension keeps the same feasible one-swap support as the
+Johnson graph but changes the hopping amplitudes according to
+Eq.~\eqref{eq:cost-weighted-johnson}. Table~\ref{tab:weighted-scan} and
+Fig.~\ref{fig:weighted-alpha} summarize the scan over \(\alpha\). The best
+aggregate result occurs for a small positive weight, \(\alpha=0.25\), while
+large weights degrade performance. This is consistent with the interpretation
+that a mild cost-sensitive deformation of the feasible walk can help guide the
+search, whereas excessively suppressing transitions can reduce useful
+exploration. \gabriel{The writing is a bit weird here. Results for weighted Johnson graphs were already discussed in the previous paragraph a lot.}
+
+\input{manuscript/table_weighted_scan}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.98\linewidth]{figures/weighted_alpha_scan.pdf}
+\caption{Weighted-Johnson scan as a function of the cost-weight parameter
+\(\alpha\). The point \(\alpha=0\) corresponds to the unweighted Johnson graph.}
+\label{fig:weighted-alpha}
+\end{figure}
+
+\subsection{Complete graph versus Grover mixer}
+
+The complete-graph QWOA mixer and the Dicke+Grover mixer are analytically
+equivalent up to a global phase and the parameter rescaling
+\(\theta=M\beta/2\). Table~\ref{tab:grover-equivalence} verifies this relation
+numerically for all feasible sizes used in the extended benchmark. The residual
+errors are at floating-point precision, with a maximum Frobenius-norm error of
+\(1.16\times 10^{-13}\). Therefore, any small mismatch between separately
+optimized complete-graph and Dicke+Grover circuits should be interpreted as an
+implementation or optimization effect, not as a difference between the ideal
+mixers.
+
+\input{manuscript/table_equivalence}
+
+\subsection{Graph-level resources and implementation diagnostics}
+
+
+The complete feasible graph has \(|\mathcal{F}|(|\mathcal{F}|-1)/2\) edges,
+whereas the Johnson graph has
+\begin{equation}
+    \frac{1}{2}\binom{n}{k} k(n-k)
+\end{equation}
+edges and degree \(k(n-k)\). Weighted Johnson graphs have the same support as the Johnson graph and
+therefore do not increase the number of graph edges at the abstract graph
+level, although nonuniform weights may affect circuit-level implementation
+costs. Representative values are shown in
+Table~\ref{tab:graph-resources}. For example, for \((n,k)=(8,4)\), the complete
+feasible graph has \(2415\) edges, while the Johnson and weighted-Johnson
+graphs have \(560\) edges.
+
+\input{manuscript/table_resources}
+
+At the circuit level, the resource cost depends on the chosen implementation of
+the abstract mixer. Table~\ref{tab:circuit-resources} reports representative
+five-qubit circuit diagnostics from the notebook and should not be interpreted
+as optimized lower bounds. In this implementation, the Dicke+Grover circuit is
+substantially deeper than the simple penalty-QAOA example. This does not prove
+an intrinsic disadvantage of complete-graph mixing, but it emphasizes that
+feasible-state preparation, reflection operations, and the hardware-level
+realization of number-preserving mixers must be included when comparing
+implementable ansatz. \gabriel{Personally, I think this is in the wrong section or at least in the wrong part of the section. This kind of information about circuit depth can inform the reader earlier and help them understand and predict the remaining results (or ask good questions when reading). Much of this is more theoretical than empirical, and hence might fit in some other section.}
+
+\input{manuscript/table_circuit_resources}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.98\linewidth]{figures/penalty_scan.pdf}
+\caption{Penalty scan for the single five-asset instance. The penalty strength
+controls a tradeoff between feasibility and optimization of the original
+objective.}
+\label{fig:penalty-scan}
+\end{figure}

@@ -1,0 +1,92 @@
+\section{\label{sec:preliminaries}Theoretical preliminaries}
+
+\subsection{Portfolio optimization problem}
+
+Portfolio optimization is the problem of selecting a set of assets that provides a favorable trade-off between expected return and risk. In the classical mean--variance framework introduced by Markowitz, the return of a portfolio is quantified by the expected return of the selected assets, while the risk is quantified by the variance of the portfolio return \cite{Markowitz1952,Markowitz1959}. Let \(n\) denote the number of available assets, let \(\mu_i\) be the expected
+return of asset \(i\), and let \(\Sigma_{ij}\) be the covariance matrix of asset
+returns. In the binary formulation considered here, each asset is represented
+by a variable
+\begin{equation}
+    x_i \in \{0,1\},
+\end{equation}
+where \(x_i=1\) means that asset \(i\) is included in the portfolio and
+\(x_i=0\) otherwise. We consider a fixed-cardinality binary portfolio problem,
+where the number of selected assets is fixed as
+\begin{equation}
+    \sum_{i=1}^{n} x_i = k .
+\end{equation}
+Thus the feasible configurations are bit strings of fixed Hamming weight \(k\).
+
+The Markowitz objective combines a risk term and a return term. For a binary portfolio \(x=(x_1,\ldots,x_N)\), we write the cost function as
+\begin{equation}
+    C(x)
+    =
+    q \sum_{i,j=1}^{n} \Sigma_{ij} x_i x_j
+    -
+    (1-q)\sum_{i=1}^{n} \mu_i x_i ,
+    \label{eq:portfolio-cost}
+\end{equation}
+where \(q\in[0,1]\). is the risk-aversion parameter. The first term penalizes portfolios with large return variance, including correlations between different assets, while the second term favors assets with larger expected return. Minimizing Eq.~\eqref{eq:portfolio-cost} therefore selects portfolios that balance risk reduction against return maximization. This binary mean--variance model naturally defines a quadratic unconstrained binary optimization problem once the cardinality constraint is either enforced by a penalty term or incorporated directly into the feasible subspace \cite{Lucas2014,Venturelli2019}. This is an equal-weight binary selection version of the Markowitz
+mean--variance problem: the binary variables determine which assets are
+included, while the cardinality constraint fixes the number of selected assets.
+It should therefore be distinguished from the continuous-weight Markowitz
+problem, where the portfolio weights themselves are optimized.
+
+
+\subsection{QAOA algorithm}
+
+Let $x=(x_1,\ldots,x_n)\in\{0,1\}^n$ be a binary configuration. A diagonal
+cost Hamiltonian is defined by
+\begin{equation}
+    H_C =
+    \sum_{x\in\{0,1\}^n} C(x)\ket{x}\bra{x}.
+    \label{eq:cost-hamiltonian}
+\end{equation}
+A QAOA-type variational state of depth $p$ is
+\begin{equation}
+    \ket{\psi_p(\boldsymbol{\gamma},\boldsymbol{\beta})}
+    =
+    \prod_{\ell=1}^{p}
+    e^{-i\beta_\ell H_M}
+    e^{-i\gamma_\ell H_C}
+    \ket{\psi_0},
+    \label{eq:qaoa-type-state}
+\end{equation}
+where $H_M$ is a mixer Hamiltonian and the parameters
+$(\boldsymbol{\gamma},\boldsymbol{\beta})$ are optimized classically
+~\cite{Farhi2014,Cerezo2021,Blekos2024}.
+
+For a fixed-cardinality portfolio problem, the feasible set is
+\begin{equation}
+    \mathcal{F}_{n,k}
+    =
+    \left\{
+    x\in\{0,1\}^{n}:
+    \sum_{j=1}^{n}x_j=k
+    \right\},
+    \label{eq:feasible-set}
+\end{equation}
+and the feasible Hilbert subspace is
+\begin{equation}
+    \mathcal{H}_{\mathcal{F}}
+    =
+    \operatorname{span}\{\ket{x}:x\in\mathcal{F}_{n,k}\}.
+\end{equation}
+    In the following we write \(\mathcal{F}\equiv\mathcal{F}_{n,k}\) when \(n\) and
+\(k\) are clear from context. 
+\gabriel{How easy/viable is it to generalize the paper to tensor products of Dicke states?}
+\par A feasible ansatz satisfies
+\begin{equation}
+    \ket{\psi_0}\in\mathcal{H}_{\F},
+    \qquad
+    e^{-i\beta H_M}\mathcal{H}_{\F}
+    \subseteq
+    \mathcal{H}_{\F}.
+    \label{eq:feasible-condition}
+\end{equation}
+This is the constraint-preserving strategy used in the quantum alternating
+operator ansatz~\cite{Hadfield2019}. It avoids the need to impose the hard
+constraint through energy penalties.
+For the portfolio simulations, we use the binary mean--variance cost function
+defined in Eq.~\eqref{eq:portfolio-cost}.
+\gabriel{It's weird to me having a section explaining basic QAOA but not QWOA. The former is known by pretty much everyone in the field, while the latter isn't.}

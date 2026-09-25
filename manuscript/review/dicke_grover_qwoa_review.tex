@@ -15,7 +15,9 @@ orbits. Fuchs et al.~\cite{Fuchs2022,Fuchs2024} work in the complementary
 direction, building mixers that preserve a prescribed subspace.
 
 What is missing is a statement covering an arbitrary feasibility-preserving
-mixer. Each identification above is settled by inspecting one particular Pauli
+mixer.
+
+{\color{red}\textbf{[REVIEW -- scope/novelty]} This overstates the result. The lemma covers a restricted matrix class. Frame novelty around the unified dictionary and its consequences, or formally extend the framework to signed/complex hopping and on-site potentials.} Each identification above is settled by inspecting one particular Pauli
 construction. That the
 Grover mixer and the complete-graph walk of Ref.~\cite{Slate2021} are the same
 operator, since
@@ -26,13 +28,13 @@ operator, since
 is stated in Ref.~\cite{Bridi2024}, without the explicit rescaling, but in
 neither of the two references it relates.
 Lemma~\ref{lem:dictionary} settles such
-questions once. \gabriel{The last 2 sentences are weird / ungrammatical}
+questions once.
 
 \subsection{\label{subsec:dictionary}When is a mixer a quantum walk?}
 
 \begin{lemma}[Mixer--walk correspondence]
 \label{lem:dictionary}
-Let $H_M$ be Hermitian with $H_M\mathcal{H}_{\F}\subseteq\mathcal{H}_{\F}$ \gabriel{Am I lost or should the LHS be $e^{-iH_M}\mathcal{H}_{\F}$?},
+Let $H_M$ be Hermitian with $H_M\mathcal{H}_{\F}\subseteq\mathcal{H}_{\F}$,
 and let $A_{xy}=\bra{x}H_M\ket{y}$ for $x,y\in\F$. Assume
 \begin{enumerate}
     \item[(i)] the diagonal is constant, $A_{xx}=c$;
@@ -87,6 +89,8 @@ contributes a global phase. Global phases cancel in all measurement
 probabilities, and $\beta_\ell\mapsto\varepsilon\beta_\ell$ is a bijection of
 the parameter domain, so the two ans\"atze have identical optimization
 landscapes.
+
+{\color{red}\textbf{[REVIEW -- parameter-domain caveat]} Only if the allowed parameter domains are mapped bijectively under the stated reparametrization. State the numerical domains explicitly.}
 \end{proof}
 
 The content of the lemma is in its hypotheses: given (i) and (ii),
@@ -109,7 +113,9 @@ so the mixer generates a walk with an additional on-site potential term rather
 than a pure walk, and $\ket{s_{\F}}$ is in general not an eigenvector even
 when $G_{\F}$ is regular. Penalty formulations fall into this
 class~\cite{Lucas2014}, since the penalty contributes a
-configuration-dependent diagonal. Note that $V$ cannot be absorbed into the
+configuration-dependent diagonal.
+
+{\color{red}\textbf{[REVIEW -- conceptual error]} Standard penalty-QAOA adds the penalty to $H_C$, not to $H_M$. It therefore does not turn the mixer into a walk with an on-site potential. Rewrite this distinction explicitly.} Note that $V$ cannot be absorbed into the
 phase separator, as the two enter the ansatz at different points in the
 ordered product. If instead the off-diagonal elements are complex,
 $A_{xy}=|A_{xy}|e^{i\phi_{xy}}$, the phases can be removed by a diagonal
@@ -225,6 +231,10 @@ weights completes the proof.
 
 The graphs $G_{\mathcal{F}}[G]$ are isomorphic to a class of graphs in the literature known as token graphs, whose general theory is developed in Refs.~\cite{FabilaMonroy2012Token,Carballosa2017Regularity}. Proposition~\ref{prop:xy-regularity} corresponds to a result established in Ref.~\cite{Carballosa2017Regularity}.
 
+{\color{red}\textbf{[REVIEW -- novelty boundary]} Make explicit that the graph-theoretic regularity theorem is prior work; the new contribution is its interpretation/specialization for $XY$ mixers and algorithm design.}
+
+{\color{red}\textbf{[LITERATURE UPDATE -- XY topology]} The recent DLA analysis of Kordonowy and Leipold~\cite{Kordonowy2026} explicitly studies different $XY$-mixer topologies for cardinality-constrained optimization. This paper should be discussed here because it changes the novelty boundary: topology-dependent $XY$ expressivity is now a direct literature topic. The present result remains distinct in identifying the induced feasible-state/token graph and embedding complete-$XY$ into the Johnson association scheme, but claims about topology, expressivity, or trainability should be compared against Ref.~\cite{Kordonowy2026}.}
+
 \begin{corollary}[Complete $XY$ mixer]
 \label{cor:dicke-xy-johnson}
 For $G=K_n$,
@@ -237,6 +247,10 @@ For $G=K_n$,
 The Dicke-state plus complete-$XY$ ansatz is therefore exactly QWOA on
 $J(n,k)$, with no global phase and no rescaling of $\beta$.
 \end{corollary}
+
+{\color{red}\textbf{[NOVELTY AUDIT 2026 -- Johnson identity is prior art]} This operator identity is correct, but it is no longer defensible as a standalone novelty claim. Structurally, the $k$-token graph of $K_n$ is the Johnson graph in the token-graph literature~\cite{FabilaMonroy2012Token}; algorithmically, Min, Seo, and Heo~\cite{MinSeoHeo2026} explicitly state that an $XY$ mixer confines dynamics to Johnson-graph subspaces. Recast this corollary as part of the paper's unifying dictionary and use it to motivate the Johnson-scheme extension, which is the more distinctive contribution.}
+
+{\color{red}\textbf{[NOVELTY AUDIT 2026 -- prior XY topology studies]} Ring and complete $XY$ mixers and Dicke-state initialization were already compared in the quantum alternating-operator literature~\cite{Cook2019,Wang2020,He2023}. Kordonowy and Leipold~\cite{Kordonowy2026} further analyze the dynamical Lie algebras of $XY$-mixer topologies. Therefore the manuscript should avoid implying that topology dependence of $XY$ mixers itself is new; what is new must be tied to the induced feasible-state graph/Johnson-scheme family and the controlled sweep performed here.
 
 \begin{proof}
 Apply Proposition~\ref{prop:xy-hopping} with $E=\{\{i,j\}:i\neq j\}$: every
@@ -265,6 +279,8 @@ $b(x)$ being the number of maximal cyclic blocks of ones in $x$. In
 particular $G_{\F}[C_n]$ is not regular for $2\le k\le n-2$, and
 $\ket{D^n_k}$ is not an eigenvector of $H_{XY}(C_n)$.
 \end{corollary}
+
+{\color{red}\textbf{[LITERATURE UPDATE -- initial-state/mixer alignment]} He et al.~\cite{He2023} directly compare ring and complete $XY$ mixers for constrained portfolio optimization and show that alignment between the initial state and the mixer ground state affects performance; they also study Trotterized mixers and execute a 32-qubit trapped-ion experiment. This prior work should be cited explicitly when interpreting the Dicke/complete-$XY$ versus Dicke/ring-$XY$ distinction. Note that their ground-state convention must be reconciled with the sign convention used in this manuscript.}
 
 \begin{proof}
 The first statement is Proposition~\ref{prop:xy-hopping} with $E=E(C_n)$, and
