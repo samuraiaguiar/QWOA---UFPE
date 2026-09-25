@@ -1,15 +1,49 @@
 \section{\label{sec:intro}Introduction}
 
-Variational quantum algorithms are among the main candidates for testing optimization routines on near-term quantum devices~\cite{Cerezo2021,Moll2018}. The quantum approximate optimization algorithm (QAOA) prepares a parameterized state by alternating cost-phase and mixing unitaries, with the parameters optimized classically~\cite{Farhi2014,Blekos2024}. In its original form QAOA is suited to unconstrained binary optimization. Constrained problems are often treated by adding penalty terms to the cost Hamiltonian, which embeds the feasible problem into a larger Hilbert space and may assign probability to infeasible bit strings, with a performance that depends on the relative scale of objective and penalty~\cite{Hadfield2019,Blekos2024}.
+Variational quantum algorithms are among the main candidates for testing optimization routines on near-term quantum devices~\cite{Cerezo2021,Moll2018}.
+The quantum approximate optimization algorithm (QAOA) prepares a parameterized state by alternating cost-phase and mixing unitaries, with the parameters optimized classically~\cite{Farhi2014,Blekos2024}. In its original form QAOA is suited to unconstrained binary optimization. Constrained problems are often treated by adding penalty terms to the cost Hamiltonian, which embeds the feasible problem into a larger Hilbert space and may assign probability to infeasible bit strings, with a performance that depends on the relative scale of objective and penalty~\cite{Hadfield2019,Blekos2024}.
 
 Portfolio selection provides a constrained binary optimization problem of practical interest. Each binary variable records whether an asset is held, and a cardinality constraint fixes the number of selected assets. Quantum approaches have been studied using QAOA and related variational methods~\cite{Hodson2019,Slate2021}.
 
 \sam{Recent work on multiclass portfolio optimization also uses parameterized Dicke-state ansatz to enforce class-wise fixed-cardinality constraints directly in the variational state, avoiding penalty calibration~\cite{Scursulim2026}.}
 
-For fixed cardinality the ansatz can be built directly in the Hamming-weight sector of the allowed portfolios, which avoids sampling infeasible configurations by construction. The quantum alternating operator ansatz permits mixers adapted to the feasible set~\cite{Hadfield2019}, and the quantum walk optimization algorithm (QWOA) generates the mixer from a continuous-time quantum walk on a graph whose vertices are the feasible configurations~\cite{Marsh2019,Marsh2020}. Different graphs give different mixers: the feasible subspace is fixed, but the connectivity used to explore it is a free choice.
+For fixed cardinality the ansatz can be built directly in the Hamming-weight sector of the allowed portfolios, which
+avoids sampling infeasible configurations by construction. The quantum alternating operator ansatz permits mixers adapted to the feasible set~\cite{Hadfield2019}, and the quantum walk optimization algorithm (QWOA) generates the mixer from a continuous-time quantum walk on a graph whose vertices are the feasible configurations~\cite{Marsh2019,Marsh2020}. Different
+graphs give different mixers: the feasible subspace is fixed, but the connectivity used to explore it is a free choice.
 
-Our first contribution is to make that correspondence explicit. \sam{It is worth considering whether this contribution should be prioritized.} Constraint-preserving mixers are usually written as Pauli sums and quantum walks as adjacency operators, and the identification between them is made case by case~\cite{Marsh2019, Marsh2020, Slate2021, Bartschi2020, Fuchs2022, Matwiejew2024}. Lemma~\ref{lem:dictionary} states it as a mixer--walk correspondence with explicit hypotheses, so that it applies to any feasibility-preserving mixer, and Remark~\ref{rem:failure} records what the mixer generates when the hypotheses fail. The Dicke-state plus Grover-mixer ansatz is exactly QWOA on the complete feasible graph, so the Grover mixer of Ref.~\cite{Bartschi2020} and the complete-graph mixer of Ref.~\cite{Slate2021} are the same operator; the equivalence is noted in Ref.~\cite{Bridi2024} without the rescaling, which Proposition~\ref{prop:grover-complete-qwoa} supplies as $\theta=M\beta/2$. And the graph on which the ring $XY$ mixer walks has vertex degree $2b(x)$, twice the number of maximal cyclic blocks of ones in $x$, and is therefore not regular.
+Our first contribution is to make that correspondence explicit. \sam{It is worth considering whether this contribution should be prioritized.}
+Constraint-preserving mixers are usually written as Pauli sums and quantum walks as adjacency operators, and the identification between them is made case by case~\cite{Marsh2019, Marsh2020, Slate2021, Bartschi2020, Fuchs2022, Matwiejew2024}. Lemma~\ref{lem:dictionary} states it as a mixer--walk correspondence with
+explicit hypotheses, so that it applies to any feasibility-preserving mixer,
+and Remark~\ref{rem:failure} records what the mixer generates when the
+hypotheses fail. The
+Dicke-state plus Grover-mixer ansatz is exactly QWOA on the complete feasible
+graph, so the Grover mixer of Ref.~\cite{Bartschi2020} and the complete-graph
+mixer of Ref.~\cite{Slate2021} are the same operator; the equivalence is noted
+in Ref.~\cite{Bridi2024} without the rescaling, which
+Proposition~\ref{prop:grover-complete-qwoa} supplies as $\theta=M\beta/2$. And
+the graph on which the ring
+$XY$ mixer walks has vertex degree $2b(x)$, twice the number of maximal cyclic
+blocks of ones in $x$, and is therefore not regular.
 
-The second contribution is numerical. If every feasible mixer is a walk on a graph, the graph is a design parameter, and the Johnson and complete graphs are only two points in a large space. We therefore sweep the family interpolating between them through unions of Johnson-scheme distance classes, every member of which is regular and vertex-transitive, so that the uniform feasible state remains an eigenvector of the mixer throughout. Performance is not a trend in edge density: almost the whole family is statistically indistinguishable from $J(n,k)$ across two orders of magnitude in degree, a few unions sit apart, and the complete graph is an isolated outlier whose gap widens with circuit depth. That the complete graph is the worst member is expected: Ref.~\cite{Bridi2024} proves that the Grover mixer is invariant under permutations of the feasible states and hence blind to the structure of the cost landscape, which by Proposition~\ref{prop:grover-complete-qwoa} applies to the complete-graph mixer as well. What the sweep simulation adds is the interior of the family, and in particular how early the degradation sets in.
+The second contribution is numerical. If every feasible mixer is a walk on a
+graph, the graph is a design parameter, and the Johnson and complete graphs
+are only two points in a large space. We therefore sweep the family
+interpolating between them through unions of Johnson-scheme distance classes,
+every member of which is regular and vertex-transitive, so that the uniform
+feasible state remains an eigenvector of the mixer throughout. Performance is
+not a trend in edge density: almost the whole family is statistically
+indistinguishable from $J(n,k)$ across two orders of magnitude in degree, a
+few unions sit apart, and the complete graph is an isolated outlier whose gap
+widens with circuit depth.
+That the complete graph is the worst member is expected:
+Ref.~\cite{Bridi2024} proves that the Grover mixer is invariant under
+permutations of the feasible states and hence blind to the structure of the
+cost landscape, which by Proposition~\ref{prop:grover-complete-qwoa} applies to
+the complete-graph mixer as well. What the sweep simulation adds is the interior of the
+family, and in particular how early the degradation sets in.
 
-Section~\ref{sec:preliminaries} fixes the portfolio problem, the feasible-subspace ansatz, and the graph families used throughout. Section~\ref{sec:mixers-as-walks} gives the mixer--walk correspondence and applies it to the standard mixers. Section~\ref{sec:results} describes the data, the optimization protocol and reports the benchmarks and Sec.~\ref{sec:conclusion} concludes.
+Section~\ref{sec:preliminaries} fixes the portfolio problem, the
+feasible-subspace ansatz, and the graph families used throughout.
+    Section~\ref{sec:mixers-as-walks} gives the mixer--walk correspondence and applies it to the
+    standard mixers. Section~\ref{sec:results} describes the data, the optimization protocol and reports the
+    benchmarks and Sec.~\ref{sec:conclusion} concludes.
