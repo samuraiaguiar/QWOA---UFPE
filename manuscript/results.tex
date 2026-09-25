@@ -2,20 +2,16 @@
 \section{\label{sec:results}Simulation and results}
 
 \subsection{\label{sec:data}Instances and data}
-The universe is the $76$ US large-capitalisation equities of
-Table~\ref{tab:universe}, spanning the ten GICS sectors, with daily
-adjusted close prices from Yahoo Finance for 2012-01-01 to 2024-12-31.
-A ticker is retained only if its series is complete over the span, so
-every window draws on the same universe.
+The universe is the $76$ US large-capitalisation equities of Table~\ref{tab:universe}, spanning the ten GICS sectors, with daily adjusted close prices from Yahoo Finance for 2012-01-01 to 2024-12-31. A ticker is retained only if its series is complete over the span, so every window draws on the same universe.
 
 \begin{table}[t]
   \caption{The asset universe. Four of eighty candidates (ABBV, PSX,
-  DOW, AVB) were dropped for incomplete history.}
+DOW, AVB) were dropped for incomplete history.}
   \label{tab:universe}
-  \footnotesize
+\footnotesize
   \begin{ruledtabular}
   \begin{tabular}{ll}
-    Sector & Tickers \\ \hline
+Sector & Tickers \\ \hline
     Information Technology & AAPL, MSFT, NVDA, AVGO, \\
                            & CSCO, ORCL, ACN, TXN \\
     Health Care            & JNJ, UNH, LLY, MRK, \\
@@ -40,168 +36,61 @@ every window draws on the same universe.
   \end{ruledtabular}
 \end{table}
 
-For a window $W$ of $504$ consecutive trading days and an asset subset
-$S$ with $|S|=n$, logarithmic returns give
+For a window $W$ of $504$ consecutive trading days and an asset subset $S$ with $|S|=n$, logarithmic returns give
 \begin{equation}
-  \mu_i = 252\,\overline{r_i},
-  \qquad
-  \Sigma_{il} = 252\,\widehat{\mathrm{cov}}(r_i,r_l),
-  \qquad i,l\in S .
+\mu_i = 252\,\overline{r_i}, \qquad \Sigma_{il} = 252\,\widehat{\mathrm{cov}}(r_i,r_l), \qquad i,l\in S .
   \label{eq:moments}
 \end{equation}
-Six disjoint windows are taken, aligned to the end of the series. Within each window, twelve subsets of size $n$ are drawn from a single
-NumPy PCG64 generator seeded with $0$, shared across all windows and
-subsets so that the whole instance set is reproducible from that seed
-alone. The ten sectors are placed in a random order and then cycled
-through, one ticker drawn uniformly from the unused members of each
-sector in turn, until $n$ have been collected. For $n$ not a multiple of
-ten the sectors early in the order therefore contribute one ticker more
-than the others, so a given subset is not exactly balanced across
-sectors, though the order is redrawn for every subset and no sector is
-favoured on average. No subset is concentrated in a single sector. An instance is
-$(\mu,\Sigma,q)$, giving $72$ candidates per size, no two instances
-sharing both window and subset.
+Six disjoint windows are taken, aligned to the end of the series. Within each window, twelve subsets of size $n$ are drawn from a single NumPy PCG64 generator seeded with $0$, shared across all windows and subsets so that the whole instance set is reproducible from that seed alone. The ten sectors are placed in a random order and then cycled through, one ticker drawn uniformly from the unused members of each sector in turn, until $n$ have been collected. For $n$ not a multiple of ten the sectors early in the order therefore contribute one ticker more than the others, so a given subset is not exactly balanced across sectors, though the order is redrawn for every subset and no sector is favoured on average. No subset is concentrated in a single sector. An instance is $(\mu,\Sigma,q)$, giving $72$ candidates per size, no two instances sharing both window and subset.
 
 We fix $q=0.75$: on a common pilot set of $30$ candidates
 % CONFIRMAR: identificar a amostra de onde vem 2/30, 3/30, 11/30
-the survival rate of the screen below is $2/30$, $3/30$
-and $11/30$ at $q=0.25$, $0.5$, $0.75$. At small $q$ the linear term
-$-(1-q)\mu^{\mathsf T}x/k$ dominates and the problem reduces to selecting
-the $k$ largest entries of $\mu$, so under a cardinality constraint with
-equal weights it is combinatorially non-trivial only at high risk
-aversion.
+the survival rate of the screen below is $2/30$, $3/30$ and $11/30$ at $q=0.25$, $0.5$, $0.75$. At small $q$ the linear term $-(1-q)\mu^{\mathsf T}x/k$ dominates and the problem reduces to selecting the $k$ largest entries of $\mu$, so under a cardinality constraint with equal weights it is combinatorially non-trivial only at high risk aversion.
 
-Each candidate is screened against four heuristics selecting the $k$
-assets that minimise, respectively,
+Each candidate is screened against four heuristics selecting the $k$ assets that minimise, respectively,
 \begin{equation}
-  -\mu_i,\quad
-  \Sigma_{ii},\quad
-  q\,\Sigma_{ii}-(1-q)\,\mu_i,\quad
-  -\mu_i/\sqrt{\Sigma_{ii}} .
+-\mu_i,\quad \Sigma_{ii},\quad q\,\Sigma_{ii}-(1-q)\,\mu_i,\quad -\mu_i/\sqrt{\Sigma_{ii}} .
   \label{eq:heuristics}
 \end{equation}
-All four ignore the off-diagonal part of $\Sigma$, so an instance any of
-them solves is one whose optimum survives discarding the covariance
-structure, which we take to be uninformative for comparing mixers on the
-feasible graph. Survivors: $16$ at $(n,k)=(12,3)$, $21$ at $(16,4)$, $33$
-at $(20,5)$. The single-layer scan uses all survivors at the two smaller
-sizes and $15$ at $(20,5)$; the depth sweep uses $16$, $20$ and $6$, the
-last limited by computational budget.
+All four ignore the off-diagonal part of $\Sigma$, so an instance any of them solves is one whose optimum survives discarding the covariance structure, which we take to be uninformative for comparing mixers on the feasible graph. Survivors: $16$ at $(n,k)=(12,3)$, $21$ at $(16,4)$, $33$ at $(20,5)$. The single-layer scan uses all survivors at the two smaller sizes and $15$ at $(20,5)$; the depth sweep uses $16$, $20$ and $6$, the last limited by computational budget.
 
 \subsection{\label{sec:metrics}Figures of merit}
 % CONFIRMAR as tres definicoes contra o codigo
-Write $\ket{\psi}$ for the final state, supported on $\F_{n,k}$, and let
-$C_{\min}$ and $C_{\max}$ be the smallest and largest values of $C$ on
-$\F_{n,k}$. We report three quantities. The optimal-sampling probability
+Write $\ket{\psi}$ for the final state, supported on $\F_{n,k}$, and let $C_{\min}$ and $C_{\max}$ be the smallest and largest values of $C$ on $\F_{n,k}$. We report three quantities. The optimal-sampling probability
 \begin{equation}
-    P_*=\sum_{x:\,C(x)=C_{\min}}|\braket{x}{\psi}|^{2}
+P_*=\sum_{x:\,C(x)=C_{\min}}|\braket{x}{\psi}|^{2}
     \label{eq:metric-popt}
 \end{equation}
-is the probability of measuring an optimal portfolio; under
-$\ket{s_{\F}}$ it equals $|\{x:C(x)=C_{\min}\}|/M$, that is $1/M$ for a
-non-degenerate optimum. The top-quantile probability $P_{\le5\%}$ is the
-total probability of the $\lceil M/20\rceil$ feasible configurations of
-lowest cost, with uniform value $0.05$. The normalised energy
+is the probability of measuring an optimal portfolio; under $\ket{s_{\F}}$ it equals $|\{x:C(x)=C_{\min}\}|/M$, that is $1/M$ for a non-degenerate optimum. The top-quantile probability $P_{\le5\%}$ is the total probability of the $\lceil M/20\rceil$ feasible configurations of lowest cost, with uniform value $0.05$. The normalised energy
 \begin{equation}
-    \Delta_{\mathrm{norm}}
-    =\frac{\bra{\psi}H_C\ket{\psi}-C_{\min}}{C_{\max}-C_{\min}}
+\Delta_{\mathrm{norm}} =\frac{\bra{\psi}H_C\ket{\psi}-C_{\min}}{C_{\max}-C_{\min}}
     \label{eq:metric-delta}
 \end{equation}
-vanishes on an optimal portfolio and takes the value marked "uniform" in
-the figures on $\ket{s_{\F}}$. Lower is better for
-$\Delta_{\mathrm{norm}}$ and higher for the other two.
+vanishes on an optimal portfolio and takes the value marked "uniform" in the figures on $\ket{s_{\F}}$. Lower is better for $\Delta_{\mathrm{norm}}$ and higher for the other two.
 
 \subsection{\label{sec:numerics}Numerical procedure}
-Evolution is exact statevector on $\F_{n,k}$ and no $d\times d$ matrix is
-formed. The $A_T$ share the eigenvectors of $J(n,k)$ and have at most
-$r_{\max}+1$ distinct eigenvalues. Applying $e^{-i\beta A_T}$ therefore
-reduces to splitting the state into its $r_{\max}+1$ spectral components,
-which needs only repeated multiplication by the sparse adjacency of
-$J(n,k)$, and phasing each by $e^{-i\beta\lambda}$. A graph of degree
-$15503$ costs no more than one of degree $75$.
+Evolution is exact statevector on $\F_{n,k}$ and no $d\times d$ matrix is formed. The $A_T$ share the eigenvectors of $J(n,k)$ and have at most $r_{\max}+1$ distinct eigenvalues. Applying $e^{-i\beta A_T}$ therefore reduces to splitting the state into its $r_{\max}+1$ spectral components, which needs only repeated multiplication by the sparse adjacency of $J(n,k)$, and phasing each by $e^{-i\beta\lambda}$. A graph of degree $15503$ costs no more than one of degree $75$.
 
-At fixed $\gamma$ the energy is a trigonometric polynomial in $\beta$
-whose frequencies are eigenvalue differences, so the optimal region has
-width of order $1/\lambda_{\max}$. A lattice of fixed size would resolve
-it for sparse graphs and step over it for dense ones, producing an
-apparent degradation with degree that is an artefact of the scan; we fix
-instead eight samples per oscillation. Every $A_T$ has integer spectrum,
-so the energy is exactly periodic in $\beta$ with period $2\pi/g_T$,
-where $g_T$ is the greatest common divisor of the eigenvalue differences;
-$g_T$ ranges from $1$ to $7$ across the family at $(20,5)$ and equals $M$
-for $K_{\F}$. The scan range is therefore set per graph to one full
-period, and only the resolution is fixed at eight samples per
-oscillation.
+At fixed $\gamma$ the energy is a trigonometric polynomial in $\beta$ whose frequencies are eigenvalue differences, so the optimal region has width of order $1/\lambda_{\max}$. A lattice of fixed size would resolve it for sparse graphs and step over it for dense ones, producing an apparent degradation with degree that is an artefact of the scan; we fix instead eight samples per oscillation. Every $A_T$ has integer spectrum, so the energy is exactly periodic in $\beta$ with period $2\pi/g_T$, where $g_T$ is the greatest common divisor of the eigenvalue differences; $g_T$ ranges from $1$ to $7$ across the family at $(20,5)$ and equals $M$ for $K_{\F}$. The scan range is therefore set per graph to one full period, and only the resolution is fixed at eight samples per oscillation.
 % CONFIRMAR: faixa efetivamente varrida em beta e em gamma
 
-Parameters are optimised layerwise with COBYLA, depth $p$ seeded by the
-optimum of $p-1$ padded with a zero layer plus five random restarts, the
-$p-1$ solution carried forward if none improves. The initial trust radius
-is rescaled by $1/\lambda_{\max}$ for each graph, so that a step of a
-given size moves every mixer through comparable phase.
+Parameters are optimised layerwise with COBYLA, depth $p$ seeded by the optimum of $p-1$ padded with a zero layer plus five random restarts, the $p-1$ solution carried forward if none improves. The initial trust radius is rescaled by $1/\lambda_{\max}$ for each graph, so that a step of a given size moves every mixer through comparable phase.
 % CONFIRMAR/AJUSTAR: reescalonamento do raio inicial do COBYLA
-Since depth $p$ contains
-depth $p-1$ at $\gamma_p=\beta_p=0$, the optimal energy cannot increase
-with $p$; enforcing this makes the depth curves report the mixer rather
-than the optimiser. All mixers see the same instances and seeds, so
-differences are paired; comparisons against $J(n,k)$ are reported as
-paired differences with percentile bootstrap intervals, and the sign-test
-$p$-values quoted below are not corrected for the number of mixers
-compared.
+Since depth $p$ contains depth $p-1$ at $\gamma_p=\beta_p=0$, the optimal energy cannot increase with $p$; enforcing this makes the depth curves report the mixer rather than the optimiser. All mixers see the same instances and seeds, so differences are paired; comparisons against $J(n,k)$ are reported as paired differences with percentile bootstrap intervals, and the sign-test $p$-values quoted below are not corrected for the number of mixers compared.
 
 \subsection{\label{sec:intermediate}The intermediate graphs}
-We sweep every $A_T$ with $\emptyset\neq T\subseteq\{1,\dots,r_{\max}\}$,
-writing $R_{j_1\cdots j_m}$ for $T=\{j_1,\dots,j_m\}$, so $R_1=J(n,k)$,
-$R_{r_{\max}}$ is the Kneser graph and $R_{1\cdots r_{\max}}=K_{\F}$.
-There are $2^{r_{\max}}-1$ of them, that is $7$, $15$ and $31$ at the
-three sizes, all connected. By Proposition~\ref{prop:complementary} these
-fall into $2^{r_{\max}-1}-1$ complementary pairs plus $K_{\F}$, so the
-sweep contains $4$, $8$ and $16$ independent dynamics. The nested unions $A_{\le r}$ alone would
-sample only $r_{\max}$ of them and leave the degree axis nearly empty.
-Every $A_T$ is regular and vertex-transitive, so the uniform
-superposition is the mixer ground state throughout and no member depends
-on the labelling of the assets.
+We sweep every $A_T$ with $\emptyset\neq T\subseteq\{1,\dots,r_{\max}\}$, writing $R_{j_1\cdots j_m}$ for $T=\{j_1,\dots,j_m\}$, so $R_1=J(n,k)$, $R_{r_{\max}}$ is the Kneser graph and $R_{1\cdots r_{\max}}=K_{\F}$. There are $2^{r_{\max}}-1$ of them, that is $7$, $15$ and $31$ at the three sizes, all connected. By Proposition~\ref{prop:complementary} these fall into $2^{r_{\max}-1}-1$ complementary pairs plus $K_{\F}$, so the sweep contains $4$, $8$ and $16$ independent dynamics. The nested unions $A_{\le r}$ alone would sample only $r_{\max}$ of them and leave the degree axis nearly empty. Every $A_T$ is regular and vertex-transitive, so the uniform superposition is the mixer ground state throughout and no member depends on the labelling of the assets.
 
 \subsection{\label{sec:p1}Single-layer performance}
-Figures~\ref{fig:grid12} and~\ref{fig:grid20} order the graphs by degree.
-The structure is not a trend in degree but three tiers.
+Figures~\ref{fig:grid12} and~\ref{fig:grid20} order the graphs by degree. The structure is not a trend in degree but three tiers.
 
-Almost the whole family forms one cluster: at $(20,5)$, $14$ of the $15$
-complementary pairs lie within $8\%$ of one another in $P_*$ near
-$0.0032$, against a uniform baseline of $6.4\times10^{-5}$, with
-confidence intervals wider than the spread between them; likewise all
-three pairs at $(12,3)$ and $6$ of $7$ at $(16,4)$. Degree varies from
-$75$ to $15428$ across this cluster without a corresponding variation in
-performance. Consistently with
-Proposition~\ref{prop:complementary}, every complementary pair agrees to
-the quoted precision in all three figures of merit.
+Almost the whole family forms one cluster: at $(20,5)$, $14$ of the $15$ complementary pairs lie within $8\%$ of one another in $P_*$ near $0.0032$, against a uniform baseline of $6.4\times10^{-5}$, with confidence intervals wider than the spread between them; likewise all three pairs at $(12,3)$ and $6$ of $7$ at $(16,4)$. Degree varies from $75$ to $15428$ across this cluster without a corresponding variation in performance. Consistently with Proposition~\ref{prop:complementary}, every complementary pair agrees to the quoted precision in all three figures of merit.
 
-A few unions sit between the cluster and $K_{\F}$: $R_{24}$ and $R_{13}$
-at $(16,4)$, at $0.30$ and $0.34$ of the value for $J(n,k)$, and $R_{13}$
-and $R_{245}$ at $(20,5)$, at $0.50$ and $0.51$. The separation is not a
-fluctuation, $J(n,k)$ beating each on every instance. At each size the
-two form a single complementary pair, $\{R_{13},R_{24}\}$ at $(16,4)$ and
-$\{R_{13},R_{245}\}$ at $(20,5)$, as
-Proposition~\ref{prop:complementary} requires; $R_{24}$ is degraded at
-$(16,4)$ and not at $(20,5)$ because its partner changes with
-$r_{\max}$, so the relevant object is the pair rather than the index set.
-At both sizes the graph is $A_{\{1,3\}}$, whose spectrum carries a
-repeated eigenvalue there but not at $(12,3)$, where $A_{\{1,3\}}$ is not
-anomalous; at $(20,5)$ it is the only member of the family with fewer
-than $r_{\max}+1$ distinct eigenvalues, and $K_{\F}$ is the extreme case
-with two.
+A few unions sit between the cluster and $K_{\F}$: $R_{24}$ and $R_{13}$ at $(16,4)$, at $0.30$ and $0.34$ of the value for $J(n,k)$, and $R_{13}$ and $R_{245}$ at $(20,5)$, at $0.50$ and $0.51$. The separation is not a fluctuation, $J(n,k)$ beating each on every instance. At each size the two form a single complementary pair, $\{R_{13},R_{24}\}$ at $(16,4)$ and $\{R_{13},R_{245}\}$ at $(20,5)$, as Proposition~\ref{prop:complementary} requires; $R_{24}$ is degraded at $(16,4)$ and not at $(20,5)$ because its partner changes with $r_{\max}$, so the relevant object is the pair rather than the index set. At both sizes the graph is $A_{\{1,3\}}$, whose spectrum carries a repeated eigenvalue there but not at $(12,3)$, where $A_{\{1,3\}}$ is not anomalous; at $(20,5)$ it is the only member of the family with fewer than $r_{\max}+1$ distinct eigenvalues, and $K_{\F}$ is the extreme case with two.
 
-$K_{\F}$ is alone in the third tier at $0.27$, $0.15$ and $0.085$ of
-$J(n,k)$ across the three sizes, beaten on every instance everywhere, in
-all three metrics.
+$K_{\F}$ is alone in the third tier at $0.27$, $0.15$ and $0.085$ of $J(n,k)$ across the three sizes, beaten on every instance everywhere, in all three metrics.
 
-Within the cluster $J(n,k)$ is not the best member. At $(12,3)$ the
-Kneser graph exceeds it on $15$ of $16$ instances by $7\%$; at $(20,5)$,
-$R_{234}$ and $R_{2345}$ exceed it on all $15$ by $8\%$ and $4\%$, which
-a sign test rejects as equality at $p\approx3\times10^{-5}$. The accurate
-statement is that $J(n,k)$ lies within $8\%$ of the best member while
-having the smallest degree available, and that $K_{\F}$ lies an order of
-magnitude below all of them. Values are in Table~\ref{tab:grid}.
+Within the cluster $J(n,k)$ is not the best member. At $(12,3)$ the Kneser graph exceeds it on $15$ of $16$ instances by $7\%$; at $(20,5)$, $R_{234}$ and $R_{2345}$ exceed it on all $15$ by $8\%$ and $4\%$, which a sign test rejects as equality at $p\approx3\times10^{-5}$. The accurate statement is that $J(n,k)$ lies within $8\%$ of the best member while having the smallest degree available, and that $K_{\F}$ lies an order of magnitude below all of them. Values are in Table~\ref{tab:grid}.
 
 \begin{figure*}[t]
   \centering
@@ -218,11 +107,7 @@ magnitude below all of them. Values are in Table~\ref{tab:grid}.
     \caption{}\label{fig:grid12c}
   \end{subfigure}
   \caption{Single-layer performance of all seven graphs $A_T$ at
-  $(n,k)=(12,3)$ over $16$ instances, ordered by degree, with the degree
-  in parentheses and percentile bootstrap intervals: (a)~$P_*$,
-  (b)~$P_{\le5\%}$, (c)~$\Delta_{\mathrm{norm}}$. The dashed line or
-  corner annotation marks the uniform superposition; shaded rows are the
-  endpoints of the family.}
+$(n,k)=(12,3)$ over $16$ instances, ordered by degree, with the degree in parentheses and percentile bootstrap intervals: (a)~$P_*$, (b)~$P_{\le5\%}$, (c)~$\Delta_{\mathrm{norm}}$. The dashed line or corner annotation marks the uniform superposition; shaded rows are the endpoints of the family.}
   \label{fig:grid12}
 \end{figure*}
 
@@ -241,15 +126,13 @@ magnitude below all of them. Values are in Table~\ref{tab:grid}.
     \caption{}\label{fig:grid20c}
   \end{subfigure}
   \caption{As Fig.~\ref{fig:grid12} for all $31$ graphs at
-  $(n,k)=(20,5)$, $d=15504$, over $15$ instances, degree from $75$ to
-  $15503$: (a)~$P_*$, (b)~$P_{\le5\%}$, (c)~$\Delta_{\mathrm{norm}}$.
-  The two rows detached from the cluster are $R_{13}$ and $R_{245}$.}
+$(n,k)=(20,5)$, $d=15504$, over $15$ instances, degree from $75$ to $15503$: (a)~$P_*$, (b)~$P_{\le5\%}$, (c)~$\Delta_{\mathrm{norm}}$. The two rows detached from the cluster are $R_{13}$ and $R_{245}$.}
   \label{fig:grid20}
 \end{figure*}
 
 \begin{table}[t]
   \caption{Single-layer figures of merit, mean over instances with the
-  standard deviation in parentheses in units of the last digit.}
+standard deviation in parentheses in units of the last digit.}
   \label{tab:grid}
   \begin{ruledtabular}
   \input{scripts/tab_grid}
@@ -257,15 +140,7 @@ magnitude below all of them. Values are in Table~\ref{tab:grid}.
 \end{table}
 
 \subsection{\label{sec:depth}Depth dependence}
-At $(16,4)$, Fig.~\ref{fig:depth16}, $J(n,k)$ leads on all three metrics
-at every depth and no mixer exceeds it on any instance at $p=6$, where it
-reaches $P_*=0.0397$ against $0.0342$ for the Kneser graph, $0.0255$ for
-$R_{23}$, $0.0190$ for $R_2$, $0.0157$ for $R_{13}$ and $0.0081$ for
-$K_{\F}$; $\Delta_{\mathrm{norm}}=0.1215$ against $0.1421$ and $0.1621$
-for the latter two. At $(12,3)$ $J(n,k)$ leads at $p\le3$ and is matched
-or exceeded by $R_{13}$ from $p=4$ on, but $K_{\F}$ is last at every
-depth there as well. Depth separates what a
-single layer does not.
+At $(16,4)$, Fig.~\ref{fig:depth16}, $J(n,k)$ leads on all three metrics at every depth and no mixer exceeds it on any instance at $p=6$, where it reaches $P_*=0.0397$ against $0.0342$ for the Kneser graph, $0.0255$ for $R_{23}$, $0.0190$ for $R_2$, $0.0157$ for $R_{13}$ and $0.0081$ for $K_{\F}$; $\Delta_{\mathrm{norm}}=0.1215$ against $0.1421$ and $0.1621$ for the latter two. At $(12,3)$ $J(n,k)$ leads at $p\le3$ and is matched or exceeded by $R_{13}$ from $p=4$ on, but $K_{\F}$ is last at every depth there as well. Depth separates what a single layer does not.
 
 \begin{figure*}[t]
   \centering
@@ -282,9 +157,7 @@ single layer does not.
     \caption{}\label{fig:depth16c}
   \end{subfigure}
   \caption{Performance against circuit depth at $(n,k)=(16,4)$ over $20$
-  instances for six mixers spanning the degree range, layerwise
-  optimisation, shaded percentile bootstrap intervals: (a)~$P_*$,
-  (b)~$P_{\le5\%}$, (c)~$\Delta_{\mathrm{norm}}$.}
+instances for six mixers spanning the degree range, layerwise optimisation, shaded percentile bootstrap intervals: (a)~$P_*$, (b)~$P_{\le5\%}$, (c)~$\Delta_{\mathrm{norm}}$.}
   \label{fig:depth16}
 \end{figure*}
 
@@ -303,84 +176,49 @@ single layer does not.
     \caption{}\label{fig:depth20c}
   \end{subfigure}
   \caption{As Fig.~\ref{fig:depth16} at $(n,k)=(20,5)$, $d=15504$, with
-  six instances and $p\le4$: (a)~$P_*$, (b)~$P_{\le5\%}$,
-  (c)~$\Delta_{\mathrm{norm}}$. The ordering among the non-complete
-  mixers differs from Fig.~\ref{fig:depth16}.}
+six instances and $p\le4$: (a)~$P_*$, (b)~$P_{\le5\%}$, (c)~$\Delta_{\mathrm{norm}}$. The ordering among the non-complete mixers differs from Fig.~\ref{fig:depth16}.}
   \label{fig:depth20}
 \end{figure*}
 
 \begin{table}[t]
   \caption{Optimal-sampling probability against depth, mean over
-  instances with the standard deviation in parentheses in units of the
-  last digit.}
+instances with the standard deviation in parentheses in units of the last digit.}
   \label{tab:depth}
   \begin{ruledtabular}
   \input{scripts/tab_depth}
   \end{ruledtabular}
 \end{table}
 
-At $(20,5)$, Fig.~\ref{fig:depth20}, the ordering inverts: with $p\le4$
-and six instances $J(n,k)$ is the weakest of the five non-complete
-mixers, at $P_*=0.0040$ against $0.0061$ for $R_{23}$, $0.0059$ for
-$R_{13}$, $0.0057$ for Kneser and $0.0056$ for $R_2$, and last again in
-$\Delta_{\mathrm{norm}}$ at $0.2126$ against $0.1802$ for $R_{23}$, which
-beats it on all six instances. Six instances are too few to establish a
-reversal and the intervals overlap heavily, but too many to dismiss the
-disagreement with $(16,4)$.
+At $(20,5)$, Fig.~\ref{fig:depth20}, the ordering inverts: with $p\le4$ and six instances $J(n,k)$ is the weakest of the five non-complete mixers, at $P_*=0.0040$ against $0.0061$ for $R_{23}$, $0.0059$ for $R_{13}$, $0.0057$ for Kneser and $0.0056$ for $R_2$, and last again in $\Delta_{\mathrm{norm}}$ at $0.2126$ against $0.1802$ for $R_{23}$, which beats it on all six instances. Six instances are too few to establish a reversal and the intervals overlap heavily, but too many to dismiss the disagreement with $(16,4)$.
 
-Note also that $R_{13}$, one of the two second-tier outliers at $(20,5)$
-where it reaches half the single-layer $P_*$ of $J(n,k)$, is among the
-best at $p=4$. Single-layer performance is not predictive of depth
-performance within this family. What survives every size and depth is
-the position of $K_{\F}$, last everywhere and by the widest margin at
-$p=1$. Values are in Table~\ref{tab:depth}.
+Note also that $R_{13}$, one of the two second-tier outliers at $(20,5)$ where it reaches half the single-layer $P_*$ of $J(n,k)$, is among the best at $p=4$. Single-layer performance is not predictive of depth performance within this family. What survives every size and depth is the position of $K_{\F}$, last everywhere and by the widest margin at $p=1$. Values are in Table~\ref{tab:depth}.
 
 \subsection{\label{sec:circuits}Circuit realisation}
-Degree on $\F_{n,k}$ is not cost on hardware; locality of the generator
-is. Three regimes occur and they do not follow the degree ordering.
+Degree on $\F_{n,k}$ is not cost on hardware; locality of the generator is. Three regimes occur and they do not follow the degree ordering.
 
 $A_1=J(n,k)$ is generated by the $XY$ mixer on $K_n$,
 \begin{equation}
-    H_{A_1}=\tfrac12\sum_{i<j}\bigl(X_iX_j+Y_iY_j\bigr),
+H_{A_1}=\tfrac12\sum_{i<j}\bigl(X_iX_j+Y_iY_j\bigr),
     \label{eq:xy-mixer}
 \end{equation}
-two-local with $n(n-1)/2$ non-commuting terms. Terms sharing a qubit do not commute, so
-$e^{-i\beta H_{A_1}}$ cannot be written as a product of the individual
-exponentials and is instead approximated by a Trotter product of $r$
-slices, each applying every term at angle $\beta/r$; the error falls as
-$\beta^{2}/r$ and the gate count grows as $r$. A
-proper edge colouring of $K_n$ into $n-1$ matchings schedules one step as
-$n-1$ layers of disjoint two-qubit $XY$ rotations, each compiling to two
-\textsc{cnot}s: $n(n-1)$ \textsc{cnot}s at depth $n-1$.
+two-local with $n(n-1)/2$ non-commuting terms. Terms sharing a qubit do not commute, so $e^{-i\beta H_{A_1}}$ cannot be written as a product of the individual exponentials and is instead approximated by a Trotter product of $r$ slices, each applying every term at angle $\beta/r$; the error falls as $\beta^{2}/r$ and the gate count grows as $r$. A proper edge colouring of $K_n$ into $n-1$ matchings schedules one step as $n-1$ layers of disjoint two-qubit $XY$ rotations, each compiling to two \textsc{cnot}s: $n(n-1)$ \textsc{cnot}s at depth $n-1$.
 
-$A_j$ with $j\ge2$ exchanges $j$ assets at once, so its generator is a
-sum of $\binom{n}{2j}\binom{2j}{j}/2$ hopping terms
-$\prod_{a\in A}\sigma^-_a\prod_{b\in B}\sigma^+_b+\mathrm{h.c.}$, each
-expanding into $2^{2j-1}$ Pauli strings of weight $2j$ needing $2(2j-1)$
-\textsc{cnot}s. No union containing such a relation is two-local.
+$A_j$ with $j\ge2$ exchanges $j$ assets at once, so its generator is a sum of $\binom{n}{2j}\binom{2j}{j}/2$ hopping terms $\prod_{a\in A}\sigma^-_a\prod_{b\in B}\sigma^+_b+\mathrm{h.c.}$, each expanding into $2^{2j-1}$ Pauli strings of weight $2j$ needing $2(2j-1)$ \textsc{cnot}s. No union containing such a relation is two-local.
 
 $K_{\F}$ has $A=J-I$, so
 \begin{equation}
-    e^{-i\beta A}=e^{i\beta}\Bigl[I
-      +\bigl(e^{-i\beta|\F|}-1\bigr)\ket{s}\!\bra{s}\Bigr],
+e^{-i\beta A}=e^{i\beta}\Bigl[I +\bigl(e^{-i\beta|\F|}-1\bigr)\ket{s}\!\bra{s}\Bigr],
     \label{eq:grover-mixer}
 \end{equation}
-the Grover mixer, realised exactly as $U_S\,P\,U_S^{\dagger}$ with $U_S$
-a Dicke preparation and $P$ a phase on $\ket{0}^{\otimes n}$. It carries
-no Trotter error, at the price of two applications of $U_S$ and an
-$n$-controlled phase. Table~\ref{tab:circuits} gives counts from explicit
-construction and transpilation; entries for $j\ge2$ are lower bounds
-assuming neither cancellation nor parallelism.
+the Grover mixer, realised exactly as $U_S\,P\,U_S^{\dagger}$ with $U_S$ a Dicke preparation and $P$ a phase on $\ket{0}^{\otimes n}$. It carries no Trotter error, at the price of two applications of $U_S$ and an $n$-controlled phase. Table~\ref{tab:circuits} gives counts from explicit construction and transpilation; entries for $j\ge2$ are lower bounds assuming neither cancellation nor parallelism.
 
 \begin{table}[t]
   \caption{Cost of one layer, transpiled to $\{\textsc{cnot},U\}$ with
-  all-to-all connectivity. $K_{\F}$ is exact and needs one application;
-  $J(n,k)$ needs $r$ Trotter steps. Entries for $j\ge2$ are lower bounds
-  and no circuit was built for them.}
+all-to-all connectivity. $K_{\F}$ is exact and needs one application; $J(n,k)$ needs $r$ Trotter steps. Entries for $j\ge2$ are lower bounds and no circuit was built for them.}
   \label{tab:circuits}
   \begin{ruledtabular}
   \begin{tabular}{llcrr}
-    $(n,k)$ & mixer & locality & \textsc{cnot} & depth \\ \hline
+$(n,k)$ & mixer & locality & \textsc{cnot} & depth \\ \hline
     $(12,3)$ & $J(n,k)$ & 2  & 132  & 45   \\
              & $K_{\F}$ & -- & 948  & 1375 \\
              & $A_2$    & 4  & $\ge7\times10^{4}$ & -- \\[2pt]
@@ -396,35 +234,10 @@ assuming neither cancellation nor parallelism.
 \end{table}
 
 \subsection{\label{sec:nisq}Implications for near-term implementation}
-Only $A_1$ is two-local. Unions containing $j\ge2$ need one Trotter step
-of $\ge7\times10^{5}$ \textsc{cnot}s for $A_2$ and $\ge10^{8}$ for $A_3$
-at $(20,5)$, against $380$ for $J(n,k)$; they map the family but are not
-candidates for hardware. Of the two implementable members, $K_{\F}$ is
-exact but costs $3124$ \textsc{cnot}s at depth $4753$ at $(20,5)$,
-against $380$ and $77$ per Trotter step of the $XY$ mixer, so the latter
-is cheaper for any Trotter order $r\lesssim8$ and by a factor of $60$ in
-depth.
+Only $A_1$ is two-local. Unions containing $j\ge2$ need one Trotter step of $\ge7\times10^{5}$ \textsc{cnot}s for $A_2$ and $\ge10^{8}$ for $A_3$ at $(20,5)$, against $380$ for $J(n,k)$; they map the family but are not candidates for hardware. Of the two implementable members, $K_{\F}$ is exact but costs $3124$ \textsc{cnot}s at depth $4753$ at $(20,5)$, against $380$ and $77$ per Trotter step of the $XY$ mixer, so the latter is cheaper for any Trotter order $r\lesssim8$ and by a factor of $60$ in depth.
 
-The results are favourable, the whole cluster performs within $8\%$ of itself across two
-orders of magnitude in degree, so the sparsest and only two-local member
-costs almost nothing in quality, and at $(16,4)$ nothing at all, leading
-every tested mixer at every depth and reaching $P_*=0.0397$ at $p=6$
-against $0.0081$ for $K_{\F}$.
+The results are favourable, the whole cluster performs within $8\%$ of itself across two orders of magnitude in degree, so the sparsest and only two-local member costs almost nothing in quality, and at $(16,4)$ nothing at all, leading every tested mixer at every depth and reaching $P_*=0.0397$ at $p=6$ against $0.0081$ for $K_{\F}$.
 
-Two further observations belong here. At $(20,5)$ and $p\le4$, $J(n,k)$ is the weakest of
-the five non-complete mixers tested, so its depth advantage may not
-persist with size; six instances cannot settle this. And the leaders
-there, $R_{23}$ and $R_{13}$, need $\ge10^{5}$ and $\ge10^{8}$
-\textsc{cnot}s per Trotter step: a factor of $1.5$ in $P_*$ at five
-orders of magnitude in circuit cost is not a favourable trade at any
-achievable noise level, so the practical conclusion holds where the
-numerical ordering does not.
+Two further observations belong here. At $(20,5)$ and $p\le4$, $J(n,k)$ is the weakest of the five non-complete mixers tested, so its depth advantage may not persist with size; six instances cannot settle this. And the leaders there, $R_{23}$ and $R_{13}$, need $\ge10^{5}$ and $\ge10^{8}$ \textsc{cnot}s per Trotter step: a factor of $1.5$ in $P_*$ at five orders of magnitude in circuit cost is not a favourable trade at any achievable noise level, so the practical conclusion holds where the numerical ordering does not.
 
-$K_{\F}$ is the one unambiguous negative result: weakest at every size
-and depth, beaten by $J(n,k)$ on every instance, and the more expensive
-of the two implementable mixers by factors of eight in \textsc{cnot}s and
-sixty in depth, against a single Trotter step of the $XY$ mixer. Its
-appeal is generality, applying to any feasible set
-whose uniform superposition can be prepared and carrying no Trotter
-error. Where the feasible set has combinatorial structure, discarding it
-is costly in both quality and circuit resources.
+$K_{\F}$ is the one unambiguous negative result: weakest at every size and depth, beaten by $J(n,k)$ on every instance, and the more expensive of the two implementable mixers by factors of eight in \textsc{cnot}s and sixty in depth, against a single Trotter step of the $XY$ mixer. Its appeal is generality, applying to any feasible set whose uniform superposition can be prepared and carrying no Trotter error. Where the feasible set has combinatorial structure, discarding it is costly in both quality and circuit resources.
