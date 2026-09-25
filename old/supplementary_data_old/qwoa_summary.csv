@@ -1,0 +1,5 @@
+label,penalty,graph_edges,graph_mean_degree,P_feasible,P_optimal,best_feasible_bitstring,best_feasible_cost,gap_best_minus_optimal,expected_original_cost,expected_feasible_cost_conditional,optimizer_fun,optimizer_success
+"QWOA Johnson graph: one asset swap, Hamming distance 2",,30.0,6.0,1.0,0.520751953125,10101,-0.49079015770886447,0.0,-0.45131556368491516,-0.45131556368491516,-0.4513155636849153,True
+QWOA complete feasible graph / Grover-equivalent,,45.0,9.0,1.0,0.326416015625,10101,-0.49079015770886447,0.0,-0.4089740802335269,-0.4089740802335269,-0.408974080233527,True
+QWOA threshold graph: Hamming distance <= 4,,45.0,9.0,1.0,0.32275390625,10101,-0.49079015770886447,0.0,-0.4089870992778737,-0.4089870992778737,-0.4089870992778738,True
+QWOA user graph: feasible strings with Hamming distance 1,,0.0,0.0,1.0,0.094482421875,10101,-0.49079015770886447,0.0,-0.2890116955556599,-0.2890116955556599,-0.2890116955556601,True

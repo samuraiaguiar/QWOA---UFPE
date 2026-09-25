@@ -1,4 +1,4 @@
-\section{\label{sec:preliminaries}Theoretical preliminaries}
+ \section{\label{sec:preliminaries}Theoretical preliminaries}
 
 \subsection{Portfolio optimization problem}
 
@@ -97,7 +97,7 @@ satisfies
     \subseteq
     \mathcal{H}_{\F} .
     \label{eq:feasible-condition}
-\end{equation}
+\end{equation} \gabriel{Interestingly, we're not working under the usual adiabatic theorem assumptions that the initial state is the ground state for the mixer. Maybe it's worth mentioning this.}
 This is the constraint-preserving strategy of the quantum alternating operator
 ansatz~\cite{Hadfield2019}, which avoids imposing the hard constraint through
 energy penalties. For $x = (x_1,\dots,x_n) \in \{0,1\}^n$, we define its support as $\operatorname{supp}(x) = \{i \mid x_i = 1\}$. Recalling the symmetric difference of sets $A \Delta B = (A \setminus B) \cup (B \setminus A) = (A \cup B) \setminus (A \cap B)$, we have $\operatorname{supp}(x) \Delta \operatorname{supp}(y) = \{i \mid x_i \neq y_i\}$; that is, the set of indices where $x$ and $y$ differ.
@@ -171,7 +171,7 @@ search by a property of the graph rather than of the objective function.
 The mixers compared in this work differ only in the feasible graph $G_{\F}$
 entering Eq.~\eqref{eq:feasible-adjacency}. We collect here the families that
 appear. Throughout, $d_H(x,y)$ is the Hamming distance between bit strings and
-$\operatorname{supp}(x)=\{i:x_i=1\}$.
+$\operatorname{supp}(x)=\{i:x_i=1\}$ \gabriel{repeated definition, already in II.B}.
 
 \paragraph*{Hypercube.} The $n$-dimensional hypercube $Q_n$ has vertex set
 $\{0,1\}^{n}$, with $x\sim y$ when $d_H(x,y)=1$. It is $n$-regular,
@@ -204,27 +204,27 @@ giving classes $A_1,\dots,A_{r_{\max}}$ with $r_{\max}=\min(k,n-k)$, where
 $A_r$ is regular of degree $\binom{k}{r}\binom{n-k}{r}$ with edges defined by the relation 
 \begin{equation}
   x \sim y \iff d_J(x,y) = r.
-\end{equation}
+\end{equation} \gabriel{I think there's a lot of abuse of notation making things confusing here. Essentially, we look at the classes as graphs, all on the same vertex set, with different edge sets. It's important for the reader to see they're defined over the same vertex set to understand the definition of $A_T$ below. Ultimately the important point is that $A_r$ = graph of feasible solutions with edges between solutions that differ by exactly $r$ in subset distance and this isn't that clear from the way it's written.}
  Consequently, $A_1=J(n,k)$. For
 non-empty $T\subseteq\{1,\dots,r_{\max}\}$ let $A_T=\bigcup_{r\in T}A_r$.
 Each $A_T$ is regular of degree $\sum_{r\in T}\binom{k}{r}\binom{n-k}{r}$
 and vertex-transitive, with $A_{\{1\}}=J(n,k)$ and
 $A_{\{1,\dots,r_{\max}\}}=K_{\F}$. The $2^{r_{\max}}-1$
-graphs $A_T$ are the family swept in Sec.~\ref{sec:results}.
+graphs $A_T$ are the family swept in Sec.~\ref{sec:results} \gabriel{Do we know whether this graph family is already known in the graph theory literature?}.
 
 For brevity we write $R_{j_1\cdots j_m}$ for $A_T$ with
 $T=\{j_1,\dots,j_m\}$, so that $R_1=A_{\{1\}}=J(n,k)$ and
 $R_{1\cdots r_{\max}}=A_{\{1,\dots,r_{\max}\}}=K_{\F}$; the single class
-$R_{r_{\max}}$ is the Kneser graph, which for $2k\le n$ joins disjoint
+$R_{r_{\max}}$ is \gabriel{known as (otherwise it feels very weird to define hypercubes and cyclic graphs but to give no definition for this way less known family)} the Kneser graph, which for $2k\le n$ joins disjoint
 $k$-subsets and has degree $\binom{n-k}{k}$. This is the notation used in
 the axis labels of Figs.~\ref{fig:grid12}--\ref{fig:depth20}.
 
-Table~\ref{tab:graph-zoo} summarizes the parameters.
+Table~\ref{tab:graph-zoo} summarizes the parameters. \gabriel{This sentence feels disjointed from everything else around it. And which parameters?}
 
 \begin{table}[b]
 \caption{\label{tab:graph-zoo}Feasible graphs used in this work, with
 $M=\binom{n}{k}$. The graph $G_{\F}[C_n]$ of the ring $XY$ mixer is not
-regular; $b(x)$ is the number of maximal cyclic blocks of ones in $x$.}
+regular; $b(x)$ is the number of maximal cyclic blocks of ones in $x$. \gabriel{Changing the table to the top [t] might make this less cramped with the proof text.}}
 \begin{ruledtabular}
 \begin{tabular}{lccc}
 Graph & Vertices & Degree & Diameter \\
@@ -238,7 +238,7 @@ $K_{\F}$ & $M$ & $M-1$ & $1$ \\
 \end{table}
 
 We do not consider graphs sparser than $J(n,k)$ for the simulations performed in Sec.~\ref{sec:results} because there are none
-available: every graph on $\F_{n,k}$ invariant under permutations of the
+available \gabriel{as we will show below in Proposition 1}: every graph on $\F_{n,k}$ invariant under permutations of the
 assets is one of the $A_T$, and none of them has smaller degree at the
 sizes considered here. We only consider permutation-invariant graphs because we are not choosing any particular set of distinguished vertices.
 
@@ -270,7 +270,7 @@ graphs on $\F_{n,k}$ has bounded degree as $n$ grows.
 \begin{proof}
 
   \emph{(i)}
-Fix a pair $(x,y)$ in $\F_{n,k}$ and set $j=d_J(x,y)=k-|x\cap y|$. Sorting the indices
+Fix a pair $(x,y)$ in $\F_{n,k}$ and set $j=d_J(x,y)=k-|x\cap y|$ \gabriel{to be pedantic, you're missing supps here}. Sorting the indices
 of $[n]$ according to whether they lie in $x$, in $y$, in both, or in
 neither splits $[n] = \{0,1,\dots n-1\}$ into four blocks,
 \begin{equation*}
@@ -287,7 +287,7 @@ block. Note that all four are determined by $j$ alone.
 Now take a second pair $(x',y')$ with the same value of $j$. Its four
 blocks have the same four sizes, so we may choose a bijection of $[n]$
 sending each block of the first pair onto the corresponding block of the
-second; any such bijection is a permutation $\sigma\in S_n$ with
+second; any such bijection is a permutation $\sigma\in S_n$ \gabriel{While I'm pretty convinced this is true I'm not certain it's that trivial. It definitely doesn't follow from the block cardinalities being equal, because the bijections could not all be "compatible" in the sense that they glue together to form a permutation}with
 $\sigma(\operatorname{supp}(x))=\operatorname{supp}(x')$ and $\sigma(\operatorname{supp}(y))=\operatorname{supp}(y')$. Conversely, a permutation cannot change
 $|\operatorname{supp}(x) \cap \operatorname{supp}(y)|$, hence cannot change $j$. The two pairs therefore lie in the
 same $S_n$-orbit if and only if they share the same $j$, so the orbits of
@@ -296,7 +296,7 @@ of $j$ is $\{0,\dots,r_{\max}\}$: the fourth block has non-negative size,
 which forces $j\le n-k$, and $j\le k$ by definition.
 
 A graph invariant under $S_n$ has an edge set closed under the action, so
-it is a union of each of these orbits. It follows now by definition that any graph invariant under $S_n$ must be some $A_T$ with $\emptyset\neq T\subseteq\{1,\dots,r_{\max}\}$.
+it is a union of each of these orbits \gabriel{It might make the argument a little clearer to explicitly point out that the orbits are essentially the graphs $A_j$ at some point}. It follows now by definition that any graph invariant under $S_n$ must be some $A_T$ with $\emptyset\neq T\subseteq\{1,\dots,r_{\max}\}$.
 
 \medskip
 \emph{(ii)}
@@ -333,10 +333,10 @@ singleton achieving that minimum. This is $d_{\min}(n,k)$.
 For $k\le n-k$ we have $v_{r_{\max}}=\binom{n-k}{k}$, and the standard
 bound $\binom{m}{k}\ge(m/k)^{k}$ shows this grows like a $k$-th power of
 $n-k$, whereas $v_1=k(n-k)$ grows linearly. The Kneser end is therefore
-the smaller only for $n$ close to $2k$; explicitly, $v_{r_{\max}}\ge v_1$
+the smaller one only for $n$ close to $2k$; explicitly, $v_{r_{\max}}\ge v_1$
 holds for all $n\ge k^{2}$ when $k\ge3$, and for all $n\ge7$ when $k=2$.
 For the sizes used in this work, $(n,k)=(12,3)$, $(16,4)$ and $(20,5)$, the
-minimum is $v_1=k(n-k)$, attained by $J(n,k)$.
+minimum is $v_1=k(n-k)$, attained by $J(n,k)$. \gabriel{This last sentence doesn't feel like it should be inside the proof. Maybe move it outside along with a short explanation on why the $d_{min}$ estimates and degree bound are useful to us?}
 \end{proof}
 
 % =====================================================================

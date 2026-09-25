@@ -1,0 +1,89 @@
+\section{\label{sec:simulation}Numerical simulation and data}
+
+We use the mean--variance portfolio objective defined in
+Eq.~\eqref{eq:portfolio-cost}. The asset universe consists of the tickers
+AAPL, MSFT, NVDA, KO, JPM, AMZN, GOOGL, and META, using historical daily prices
+over the period from 2021-05-27 to 2026-05-21. The data are divided into four
+market windows, specified below. Unless otherwise stated, the risk-aversion
+parameter is fixed at \(q=0.5\). Daily prices are converted into daily
+returns, and the return vector and covariance matrix are annualized according
+to
+\begin{equation}
+    \mu = 252\,\mu_{\mathrm{daily}},
+    \qquad
+    \Sigma = 252\,\Sigma_{\mathrm{daily}},
+\end{equation}
+where 252 is the standard approximation for the number of trading days in one
+year.
+
+For each instance, the exact optimum is obtained by enumerating the feasible
+set. The main diagnostics are the probability of sampling an optimal feasible
+portfolio,
+\begin{equation}
+    P_\star = \sum_{x:C(x)=C_{\min}} |\braket{x}{\psi}|^2,
+\end{equation}
+the probability of sampling a portfolio within five percent of the feasible
+cost range above the optimum,
+\begin{equation}
+    P_{\leq 5\%}
+    =
+    \sum_{x:\, [C(x)-C_{\min}]/[C_{\max}-C_{\min}]\leq 0.05}
+    |\langle x|\psi\rangle|^2 ,
+    \label{eq:p-five-percent}
+\end{equation}
+\gabriel{Another potentially informative idea that is more global: plotting the cumulative probability distribution of solution probabilities as a function of the energy / gap / approximation ratio. As QAOA variants often have output distributions with significant variance, this helps us have a global notion of what's happening in terms of convergence to the ideal distribution. If a metric is needed instead of a plot, we can use some sort of normalized integral of this plot.}
+and the normalized cost gap
+\begin{equation}
+    \Delta_{\rm norm}
+    =
+    \frac{\langle C\rangle-C_{\min}}{C_{\max}-C_{\min}} .
+    \label{eq:normalized-gap}
+\end{equation}
+Here \(C_{\min}\) and \(C_{\max}\) are computed within the feasible set.
+Smaller values of \(\Delta_{\rm norm}\) indicate better performance. These quantities are well defined for non-degenerate feasible cost ranges,
+\(C_{\max}>C_{\min}\), which is the case for all instances considered here.
+
+We first benchmark a five-asset instance with cardinality \(k=3\). This
+instance has
+\begin{equation}
+    |\mathcal{F}|=\binom{5}{3}=10
+\end{equation}
+feasible portfolios, compared with \(2^5=32\) states in the full computational
+basis. The optimal bit string is \(10101\), with
+\(C(x_\star)=-0.490790\). This single-instance benchmark is used primarily to
+make explicit the relation between the feasible graph and the resulting
+sampling distribution.
+
+We then perform an extended benchmark over four market windows,
+\begin{equation}
+\begin{array}{ll}
+W_1: & 2025\text{-}02\text{-}24\;\text{to}\;2026\text{-}05\text{-}21,\\
+W_2: & 2023\text{-}11\text{-}21\;\text{to}\;2025\text{-}02\text{-}21,\\
+W_3: & 2022\text{-}08\text{-}24\;\text{to}\;2023\text{-}11\text{-}20,\\
+W_4: & 2021\text{-}05\text{-}27\;\text{to}\;2022\text{-}08\text{-}23.
+\end{array}
+\end{equation}
+The tested feasible spaces are
+\[
+    (n,k)=(5,2),(5,3),(6,2),(6,3), (6,4),
+    (7,3),(7,4),(8,3),(8,4),
+\]
+\gabriel{Personally, I find this too small to draw conclusions related to scalability. Can we try running bigger instances (say, up to 20 assets)? I can help with this.}
+with circuit depths \(p=1,2,3\). For each method and depth, the variational parameters are optimized using
+COBYLA as implemented in SciPy. Each optimization is repeated over
+\(N_{\rm seed}=5\) random initializations, with initial angles sampled
+independently from the uniform distribution on \([0,\pi]\). Unless otherwise
+stated, all methods are given the same maximum number of optimizer iterations,
+\(N_{\rm iter}=120\), in the extended benchmark. For the penalty-QAOA baseline,
+the penalty parameter is scanned over
+\begin{equation}
+    \lambda\in\{0.01,0.1,1,10,100\},
+\end{equation}
+and the best result within this scanned range is reported. This gives the
+penalty baseline the benefit of penalty tuning within the tested range.
+\gabriel{Something else we could try is using qiskit's standard conversion functions that choose this automatically, e.g. QuadraticToQubo, in case none of the selected penalties give reasonable results.}
+
+All feasible QWOA mixers are simulated directly in the feasible subspace and
+therefore have \(P_{\rm feasible}=1\) by construction. By contrast, the
+transverse-field penalty-QAOA baseline evolves in the full computational basis,
+so the feasibility probability is reported separately when informative.

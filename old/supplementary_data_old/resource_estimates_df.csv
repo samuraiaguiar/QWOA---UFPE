@@ -1,0 +1,28 @@
+n,k,m_feasible,mixer,graph_edges,mean_degree,comment
+5,2,10,complete / Grover-equivalent,45,9,global feasible move; Grover implementation shifts cost to Dicke preparation and reflection
+5,2,10,Johnson / XY-swap-like,30,6,local asset-exchange move; closer to number-preserving XY mixers
+5,2,10,weighted Johnson,30,6,same support as Johnson plus financial weights on edges
+5,3,10,complete / Grover-equivalent,45,9,global feasible move; Grover implementation shifts cost to Dicke preparation and reflection
+5,3,10,Johnson / XY-swap-like,30,6,local asset-exchange move; closer to number-preserving XY mixers
+5,3,10,weighted Johnson,30,6,same support as Johnson plus financial weights on edges
+6,2,15,complete / Grover-equivalent,105,14,global feasible move; Grover implementation shifts cost to Dicke preparation and reflection
+6,2,15,Johnson / XY-swap-like,60,8,local asset-exchange move; closer to number-preserving XY mixers
+6,2,15,weighted Johnson,60,8,same support as Johnson plus financial weights on edges
+6,3,20,complete / Grover-equivalent,190,19,global feasible move; Grover implementation shifts cost to Dicke preparation and reflection
+6,3,20,Johnson / XY-swap-like,90,9,local asset-exchange move; closer to number-preserving XY mixers
+6,3,20,weighted Johnson,90,9,same support as Johnson plus financial weights on edges
+6,4,15,complete / Grover-equivalent,105,14,global feasible move; Grover implementation shifts cost to Dicke preparation and reflection
+6,4,15,Johnson / XY-swap-like,60,8,local asset-exchange move; closer to number-preserving XY mixers
+6,4,15,weighted Johnson,60,8,same support as Johnson plus financial weights on edges
+7,3,35,complete / Grover-equivalent,595,34,global feasible move; Grover implementation shifts cost to Dicke preparation and reflection
+7,3,35,Johnson / XY-swap-like,210,12,local asset-exchange move; closer to number-preserving XY mixers
+7,3,35,weighted Johnson,210,12,same support as Johnson plus financial weights on edges
+7,4,35,complete / Grover-equivalent,595,34,global feasible move; Grover implementation shifts cost to Dicke preparation and reflection
+7,4,35,Johnson / XY-swap-like,210,12,local asset-exchange move; closer to number-preserving XY mixers
+7,4,35,weighted Johnson,210,12,same support as Johnson plus financial weights on edges
+8,3,56,complete / Grover-equivalent,1540,55,global feasible move; Grover implementation shifts cost to Dicke preparation and reflection
+8,3,56,Johnson / XY-swap-like,420,15,local asset-exchange move; closer to number-preserving XY mixers
+8,3,56,weighted Johnson,420,15,same support as Johnson plus financial weights on edges
+8,4,70,complete / Grover-equivalent,2415,69,global feasible move; Grover implementation shifts cost to Dicke preparation and reflection
+8,4,70,Johnson / XY-swap-like,560,16,local asset-exchange move; closer to number-preserving XY mixers
+8,4,70,weighted Johnson,560,16,same support as Johnson plus financial weights on edges

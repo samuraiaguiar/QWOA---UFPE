@@ -1,0 +1,33 @@
+
+\section{\label{sec:conclusion}Conclusion}
+
+We studied feasible-subspace QWOA mixers for a constrained binary
+portfolio-selection problem. The constraint fixes the number of selected
+assets, so the feasible subspace is a fixed-Hamming-weight sector. This allows
+the optimization dynamics to be restricted to feasible portfolios and avoids
+the probability leakage to non-feasible solutions
+~\cite{Hadfield2019,Slate2021}.
+
+We proved that the Dicke-state plus Grover-mixer ansatz is equivalent to QWOA
+on the complete graph of feasible portfolios, up to a global phase and a
+rescaling of the mixing parameter. The numerical equivalence checks confirm
+this relation to floating-point precision for all feasible-space sizes tested.
+Thus the Grover mixer has a precise graph-theoretic interpretation: it
+implements a fully connected feasible quantum walk, with the Dicke state as the
+uniform feasible initial state.
+
+The numerical results show that the complete feasible graph is not necessarily the best feasible mixer. In the tested market windows, circuit depths, and cardinalities, the Johnson and lightly weighted Johnson mixers achieve larger optimal-sampling probabilities and smaller normalized gaps than both the complete/Grover mixer and the penalty-QAOA baseline. This supports the idea that feasible-subspace topology matters: preserving the constraint is important, but the connectivity used to explore the feasible set is also a relevant algorithmic design choice.
+The weighted Johnson extension provides a simple example of a problem-adapted feasible graph, incorporating information from the portfolio objective while remaining entirely within the feasible subspace. In the present benchmarks, mild edge weighting improves the aggregate probability of sampling the optimal portfolio, whereas excessively strong weighting degrades performance by suppressing exploration.
+
+These conclusions should be interpreted with caution. The benchmark covers
+moderate feasible spaces, several market windows, and multiple optimizer
+initializations, but it remains a numerical study of small portfolio instances.
+Moreover, the present comparison does not yet include a systematic
+hardware-level comparison with number-preserving \(XY\)-mixer implementations,
+which are a natural baseline for fixed-Hamming-weight constraints. Larger asset
+sets, hardware-aware decompositions of feasible mixers, noise models, and
+systematic comparisons with \(XY\)-type mixers are natural next steps.
+
+\gabriel{In my opinion, the number 1 priority should be to compare (theoretically and empirically) the Johnson-QWOA to XY-mixer QAOA, because the latter is already well-known in the literature and is intuitively very similar to me. It isn't obvious that both methods aren't equivalent (and even less obvious when the paper doesn't show exactly which circuit is understood by Johnson-QWOA).}
+
+\gabriel{The number 2 priority is extending the experimental results to higher qubit counts. For graphs of these sizes, we can't do proper scaling analyses, which would be valuable and might give stronger argument for publication.}
